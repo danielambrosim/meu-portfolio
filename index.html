@@ -35,6 +35,7 @@
             --border-hover: #d2d2d6;
             --accent: #0071e3;
             --accent-hover: #0077ed;
+            --accent-rgb: 0, 113, 227;
             --navbar-bg: rgba(255, 255, 255, 0.92);
             --badge-bg: #e8e8ed;
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
@@ -52,6 +53,7 @@
             --border-hover: #3a3a3c;
             --accent: #0a84ff;
             --accent-hover: #409cff;
+            --accent-rgb: 10, 132, 255;
             --navbar-bg: rgba(0, 0, 0, 0.85);
             --badge-bg: #2c2c2e;
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -385,29 +387,6 @@
             gap: 0.6rem;
         }
 
-        /* Stats */
-        .stats-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            background: var(--bg-secondary);
-            border-radius: 32px;
-            padding: 2rem;
-            border: 0.5px solid var(--border-color);
-            gap: 2rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-number {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
         /* Contato */
         .contact-card {
             background: var(--bg-secondary);
@@ -526,6 +505,17 @@
             50% { text-shadow: 0 0 8px var(--accent); }
             100% { text-shadow: 0 0 0px var(--accent); }
         }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         
         /* Animações das seções */
         section {
@@ -533,7 +523,6 @@
             animation: fadeInUp 0.6s ease forwards;
         }
         
-        /* IDs das seções para delays específicos */
         #sobre { animation-delay: 0.1s; }
         #tecnologias { animation-delay: 0.2s; }
         #projetos { animation-delay: 0.3s; }
@@ -546,7 +535,6 @@
             animation: fadeInLeft 0.5s ease forwards;
         }
         
-        /* Delay escalonado para tech badges */
         .tech-badge:nth-child(1) { animation-delay: 0.05s; }
         .tech-badge:nth-child(2) { animation-delay: 0.1s; }
         .tech-badge:nth-child(3) { animation-delay: 0.15s; }
@@ -579,15 +567,54 @@
         .hero h1 { animation-delay: 0.2s; }
         .hero-sub { animation-delay: 0.3s; }
         .hero-actions { animation-delay: 0.4s; }
-        
-        /* Estatísticas */
-        .stat-item {
-            opacity: 0;
-            animation: fadeInUp 0.5s ease forwards;
+
+        /* Cards de estatísticas com hover */
+        .stat-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            border: 0.5px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: default;
         }
-        .stat-item:nth-child(1) { animation-delay: 0.1s; }
-        .stat-item:nth-child(2) { animation-delay: 0.2s; }
-        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.2;
+        }
+
+        /* Gráfico de contribuições simplificado */
+        .contrib-chart {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .chart-day {
+            width: 12px;
+            height: 12px;
+            background: var(--border-hover);
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .chart-day.level-1 { background: #40c463; opacity: 0.4; }
+        .chart-day.level-2 { background: #40c463; opacity: 0.6; }
+        .chart-day.level-3 { background: #40c463; opacity: 0.8; }
+        .chart-day.level-4 { background: #40c463; opacity: 1; }
+        [data-theme="dark"] .chart-day.level-1 { background: #2ea043; opacity: 0.5; }
+        [data-theme="dark"] .chart-day.level-2 { background: #2ea043; opacity: 0.7; }
+        [data-theme="dark"] .chart-day.level-3 { background: #2ea043; opacity: 0.9; }
+        [data-theme="dark"] .chart-day.level-4 { background: #3fb950; opacity: 1; }
 
         /* Responsividade */
         @media (max-width: 768px) {
@@ -600,10 +627,6 @@
             .nav-inner {
                 flex-direction: column;
                 align-items: flex-start;
-            }
-            .stats-row {
-                flex-direction: column;
-                text-align: center;
             }
             .music-player {
                 bottom: 16px;
@@ -623,6 +646,12 @@
             #trackName {
                 max-width: 80px;
                 font-size: 0.65rem;
+            }
+            .stat-card {
+                padding: 0.75rem;
+            }
+            .stat-number {
+                font-size: 1.5rem;
             }
         }
 
@@ -646,7 +675,6 @@
             }
         }
 
-        /* Prefers reduced motion (acessibilidade) */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -687,32 +715,62 @@
         </div>
 
         <div class="container">
+            <!-- ========== SEÇÃO SOBRE COMPLETAMENTE REFORMULADA ========== -->
             <section id="sobre">
-                <h2 class="section-title">Sobre</h2>
-                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
-                    <div style="flex: 2;">
-                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">🔭 <strong>Atualmente</strong> desenvolvendo APIs e Bots para integração · 🌱 Explorando <strong>React, Node.js e arquitetura serverless</strong> · 👯 Quero colaborar em projetos Open Source com impacto social · 💬 Pergunte-me sobre JavaScript, automações e integrações.</p>
-                        <p>⚡ Curiosidade: Apaixonado por café especial e código limpo — cada linha deve ter um propósito claro.</p>
-                    </div>
-                    <div style="flex: 1.2; background: var(--bg-secondary); border-radius: 28px; padding: 1.2rem;">
-                        <div class="stats-row" style="background: transparent; padding: 0; border: none; gap: 1rem;">
-                            <div class="stat-item">
-                                <div class="stat-number">166</div>
-                                <div style="font-size: 0.85rem;">contribuições últimos 12 meses</div>
+                <h2 class="section-title">Sobre mim</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: stretch;">
+                    
+                    <!-- Coluna esquerda -->
+                    <div style="flex: 2; display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="background: var(--bg-secondary); border-radius: 24px; padding: 1.5rem; border: 0.5px solid var(--border-color); transition: transform 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+                                <div style="background: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-rocket" style="color: white; font-size: 1.2rem;"></i>
+                                </div>
+                                <h3 style="font-size: 1.3rem; font-weight: 600;">🚀 Atualmente</h3>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-number">4</div>
-                                <div style="font-size: 0.85rem;">repositórios públicos</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">3+</div>
-                                <div style="font-size: 0.85rem;">projetos ativos</div>
-                            </div>
+                            <ul style="list-style: none; padding-left: 0;">
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;"><i class="fas fa-code" style="color: var(--accent); width: 20px;"></i><span>Desenvolvendo APIs e Bots para integração</span></li>
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;"><i class="fas fa-graduation-cap" style="color: var(--accent); width: 20px;"></i><span>Explorando <strong>React, Node.js e arquitetura serverless</strong></span></li>
+                                <li style="margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;"><i class="fas fa-handshake" style="color: var(--accent); width: 20px;"></i><span>Quero colaborar em projetos <strong>Open Source</strong> com impacto social</span></li>
+                                <li style="display: flex; align-items: center; gap: 0.6rem;"><i class="fas fa-comments" style="color: var(--accent); width: 20px;"></i><span>Pergunte-me sobre <strong>JavaScript, automações e integrações</strong></span></li>
+                            </ul>
                         </div>
-                        <div style="margin-top: 1rem; background: var(--bg-card); border-radius: 24px; padding: 1rem; text-align: center; border: 0.5px solid var(--border-color);">
-                            <i class="fab fa-github"></i> GitHub: <strong>danielambrosim</strong> · atividade consistente
+                        
+                        <div style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); border-radius: 24px; padding: 1.5rem; color: white;">
+                            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;">
+                                <i class="fas fa-mug-hot" style="font-size: 1.8rem;"></i>
+                                <h3 style="font-size: 1.3rem; font-weight: 600;">☕ Curiosidade</h3>
+                            </div>
+                            <p style="font-size: 1rem; line-height: 1.5; opacity: 0.95;">Apaixonado por café especial e código limpo — cada linha deve ter um propósito claro.</p>
                         </div>
                     </div>
+                    
+                    <!-- Coluna direita -->
+                    <div style="flex: 1.2; display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                            <div class="stat-card"><div class="stat-number" id="stat1">0</div><div style="font-size: 0.75rem; color: var(--text-secondary);">contribuições 12m</div></div>
+                            <div class="stat-card"><div class="stat-number" id="stat2">0</div><div style="font-size: 0.75rem; color: var(--text-secondary);">repositórios públicos</div></div>
+                            <div class="stat-card"><div class="stat-number" id="stat3">0</div><div style="font-size: 0.75rem; color: var(--text-secondary);">projetos ativos</div></div>
+                        </div>
+                        
+                        <div style="background: var(--bg-secondary); border-radius: 24px; padding: 1.5rem; text-align: center; border: 0.5px solid var(--border-color);">
+                            <img src="https://github.com/danielambrosim.png" alt="Foto de perfil GitHub" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 1rem; border: 3px solid var(--accent);">
+                            <p style="margin-bottom: 1rem;"><strong>danielambrosim</strong><br><span style="font-size: 0.85rem; color: var(--text-secondary);">atividade consistente</span></p>
+                            <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost" style="padding: 0.4rem 1rem; font-size: 0.8rem;"><i class="fab fa-github"></i> Ver perfil</a>
+                        </div>
+                        
+                        <div style="background: rgba(var(--accent-rgb), 0.1); border-radius: 24px; padding: 0.8rem; text-align: center; border-left: 3px solid var(--accent);">
+                            <i class="fas fa-bolt" style="color: var(--accent); margin-right: 0.5rem;"></i>
+                            <span style="font-size: 0.85rem;">Disponível para oportunidades e colaborações</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de contribuições simplificado estilo GitHub -->
+                <div style="margin-top: 2rem; background: var(--bg-secondary); border-radius: 24px; padding: 1.2rem; border: 0.5px solid var(--border-color);">
+                    <p style="margin-bottom: 0.8rem; font-weight: 500;"><i class="fab fa-github"></i> Atividade recente (últimas semanas)</p>
+                    <div class="contrib-chart" id="contribChart"></div>
                 </div>
             </section>
 
@@ -739,244 +797,69 @@
             <section id="projetos">
                 <h2 class="section-title">Projetos em destaque</h2>
                 <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="project-icon"><i class="fab fa-telegram"></i></div>
-                        <h3>Deck-Finder-Bot</h3>
-                        <p class="project-desc">Bot inteligente para Telegram que auxilia jogadores a encontrar decks e estratégias. Integração com APIs externas e comandos dinâmicos.</p>
-                        <div class="project-stack"><span>TypeScript</span><span>Node.js</span><span>Telegram API</span></div>
-                        <a href="https://github.com/danielambrosim/Deck-Finder-Bot" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-icon"><i class="fas fa-coins"></i></div>
-                        <h3>Crypto Wallet API</h3>
-                        <p class="project-desc">API REST para gerenciamento de carteiras de criptomoedas com autenticação JWT e consulta de saldos em tempo real.</p>
-                        <div class="project-stack"><span>JavaScript</span><span>Node.js</span><span>Express</span><span>JWT</span></div>
-                        <a href="https://github.com/danielambrosim/crypto-wallet-api" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-icon"><i class="fas fa-chart-line"></i></div>
-                        <h3>App_Cotacao</h3>
-                        <p class="project-desc">Aplicação web responsiva que consome APIs financeiras para exibir cotações de moedas e ativos em tempo real.</p>
-                        <div class="project-stack"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Fetch API</span></div>
-                        <a href="https://github.com/danielambrosim/App_Cotacao" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a>
-                    </div>
+                    <div class="project-card"><div class="project-icon"><i class="fab fa-telegram"></i></div><h3>Deck-Finder-Bot</h3><p class="project-desc">Bot inteligente para Telegram que auxilia jogadores a encontrar decks e estratégias. Integração com APIs externas e comandos dinâmicos.</p><div class="project-stack"><span>TypeScript</span><span>Node.js</span><span>Telegram API</span></div><a href="https://github.com/danielambrosim/Deck-Finder-Bot" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a></div>
+                    <div class="project-card"><div class="project-icon"><i class="fas fa-coins"></i></div><h3>Crypto Wallet API</h3><p class="project-desc">API REST para gerenciamento de carteiras de criptomoedas com autenticação JWT e consulta de saldos em tempo real.</p><div class="project-stack"><span>JavaScript</span><span>Node.js</span><span>Express</span><span>JWT</span></div><a href="https://github.com/danielambrosim/crypto-wallet-api" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a></div>
+                    <div class="project-card"><div class="project-icon"><i class="fas fa-chart-line"></i></div><h3>App_Cotacao</h3><p class="project-desc">Aplicação web responsiva que consome APIs financeiras para exibir cotações de moedas e ativos em tempo real.</p><div class="project-stack"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Fetch API</span></div><a href="https://github.com/danielambrosim/App_Cotacao" target="_blank" class="card-link" rel="noopener noreferrer"><i class="fab fa-github"></i> repositório →</a></div>
                 </div>
-                <div style="margin-top: 2.5rem; text-align: center;">
-                    <a href="https://github.com/danielambrosim?tab=repositories" target="_blank" class="btn-outline-light" rel="noopener noreferrer"><i class="fab fa-github"></i> Explorar todos os projetos no GitHub</a>
-                </div>
+                <div style="margin-top: 2.5rem; text-align: center;"><a href="https://github.com/danielambrosim?tab=repositories" target="_blank" class="btn-outline-light" rel="noopener noreferrer"><i class="fab fa-github"></i> Explorar todos os projetos no GitHub</a></div>
             </section>
 
             <section id="contribuicoes">
                 <h2 class="section-title">Contribuições & Open Source</h2>
                 <div style="background: var(--bg-secondary); border-radius: 28px; padding: 1.8rem; border: 0.5px solid var(--border-color);">
-                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between;">
-                        <div><i class="fab fa-github" style="font-size: 2rem;"></i> <strong>danielambrosim</strong> · 166 contribuições no último ano</div>
-                        <span class="tech-badge" style="background: var(--badge-bg); cursor: default;"><i class="fas fa-star"></i> 3 estrelas totais</span>
-                    </div>
-                    <hr style="margin: 1.2rem 0; border-color: var(--border-color);">
-                    <p style="margin-bottom: 0.5rem;"><i class="fas fa-code-branch"></i> Primeiro pull request recente aberto no perfil público · colaboração ativa em projetos JavaScript.</p>
-                    <p class="hero-badge" style="background: var(--badge-bg); margin-top: 0.8rem; display: inline-block;">🚀 Aberto a colaborações e mentorias</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between;"><div><i class="fab fa-github" style="font-size: 2rem;"></i> <strong>danielambrosim</strong> · 166 contribuições no último ano</div><span class="tech-badge" style="background: var(--badge-bg); cursor: default;"><i class="fas fa-star"></i> 3 estrelas totais</span></div>
+                    <hr style="margin: 1.2rem 0; border-color: var(--border-color);"><p style="margin-bottom: 0.5rem;"><i class="fas fa-code-branch"></i> Primeiro pull request recente aberto no perfil público · colaboração ativa em projetos JavaScript.</p><p class="hero-badge" style="background: var(--badge-bg); margin-top: 0.8rem; display: inline-block;">🚀 Aberto a colaborações e mentorias</p>
                 </div>
             </section>
 
             <section id="contato">
                 <h2 class="section-title">Vamos criar algo extraordinário?</h2>
-                <div class="contact-card">
-                    <i class="fas fa-envelope-open-text" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.8rem; display: inline-block;"></i>
-                    <p style="max-width: 500px; margin: 0 auto 1.2rem;">Se você busca um desenvolvedor com visão de produto, habilidades sólidas em back-end e front-end e foco em código limpo, vamos conversar.</p>
-                    <div class="contact-buttons">
-                        <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://www.linkedin.com/in/daniel-ambrosim-colodete/" target="_blank" class="btn-ghost" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
-                        <a href="mailto:dambrosimcolodete@gmail.com" class="btn-primary"><i class="fas fa-paper-plane"></i> Email profissional</a>
-                    </div>
-                </div>
+                <div class="contact-card"><i class="fas fa-envelope-open-text" style="font-size: 2rem; color: var(--accent); margin-bottom: 0.8rem; display: inline-block;"></i><p style="max-width: 500px; margin: 0 auto 1.2rem;">Se você busca um desenvolvedor com visão de produto, habilidades sólidas em back-end e front-end e foco em código limpo, vamos conversar.</p><div class="contact-buttons"><a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a><a href="https://www.linkedin.com/in/daniel-ambrosim-colodete/" target="_blank" class="btn-ghost" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i> LinkedIn</a><a href="mailto:dambrosimcolodete@gmail.com" class="btn-primary"><i class="fas fa-paper-plane"></i> Email profissional</a></div></div>
             </section>
         </div>
     </main>
 
-    <!-- Botão de tema escuro/claro -->
-    <div class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
-        <i class="fas fa-moon"></i>
-    </div>
+    <div class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro"><i class="fas fa-moon"></i></div>
 
-    <!-- Player de música com playlist -->
-    <div class="music-player" id="musicPlayer">
-        <button id="playPauseBtn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
-        <button id="prevTrackBtn" style="background: transparent; color: var(--text-primary); width: auto;" aria-label="Música anterior"><i class="fas fa-backward"></i></button>
-        <span id="trackName" style="font-size: 0.7rem; font-weight: 500; max-width: 120px; overflow: hidden; text-overflow: ellipsis;">Nenhuma música</span>
-        <button id="nextTrackBtn" style="background: transparent; color: var(--text-primary); width: auto;" aria-label="Próxima música"><i class="fas fa-forward"></i></button>
-    </div>
+    <div class="music-player" id="musicPlayer"><button id="playPauseBtn" aria-label="Play/Pause"><i class="fas fa-play"></i></button><button id="prevTrackBtn" style="background: transparent; color: var(--text-primary); width: auto;" aria-label="Música anterior"><i class="fas fa-backward"></i></button><span id="trackName" style="font-size: 0.7rem; font-weight: 500; max-width: 120px; overflow: hidden; text-overflow: ellipsis;">Nenhuma música</span><button id="nextTrackBtn" style="background: transparent; color: var(--text-primary); width: auto;" aria-label="Próxima música"><i class="fas fa-forward"></i></button></div>
 
-    <footer>
-        <div class="container">
-            <p>© 2026 Daniel Ambrosim Colodete — Construindo soluções digitais significativas</p>
-            <p style="margin-top: 0.4rem;"><i class="fas fa-mobile-alt"></i> Design responsivo · modo escuro disponível · música ambiente opcional</p>
-            <p><a href="https://github.com/danielambrosim" style="color: var(--accent); text-decoration: none;">github.com/danielambrosim</a></p>
-        </div>
-    </footer>
+    <footer><div class="container"><p>© 2026 Daniel Ambrosim Colodete — Construindo soluções digitais significativas</p><p style="margin-top: 0.4rem;"><i class="fas fa-mobile-alt"></i> Design responsivo · modo escuro disponível · música ambiente opcional</p><p><a href="https://github.com/danielambrosim" style="color: var(--accent); text-decoration: none;">github.com/danielambrosim</a></p></div></footer>
 
     <script>
-    // ========== TEMA CLARO/ESCURO ==========
+    // Tema
     const themeToggle = document.getElementById('themeToggle');
     const iconTheme = themeToggle.querySelector('i');
-    
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        if (theme === 'dark') {
-            iconTheme.classList.remove('fa-moon');
-            iconTheme.classList.add('fa-sun');
-        } else {
-            iconTheme.classList.remove('fa-sun');
-            iconTheme.classList.add('fa-moon');
-        }
-    }
-    
+    function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); if (theme === 'dark') { iconTheme.classList.remove('fa-moon'); iconTheme.classList.add('fa-sun'); } else { iconTheme.classList.remove('fa-sun'); iconTheme.classList.add('fa-moon'); } }
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        setTheme(savedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-    } else {
-        setTheme('light');
+    if (savedTheme) setTheme(savedTheme);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+    else setTheme('light');
+    themeToggle.addEventListener('click', () => { const current = document.documentElement.getAttribute('data-theme'); setTheme(current === 'dark' ? 'light' : 'dark'); });
+
+    // Contador animado
+    function animateNumber(element, final, duration = 1500) {
+        let start = 0, stepTime = 16, steps = duration / stepTime, increment = final / steps, current = 0, interval = setInterval(() => { current += increment; if (current >= final) { element.textContent = final; clearInterval(interval); } else { element.textContent = Math.floor(current); } }, stepTime);
     }
-    
-    themeToggle.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        if (current === 'dark') {
-            setTheme('light');
-        } else {
-            setTheme('dark');
-        }
-    });
-    
-    // ========== PLAYER DE MÚSICA COM PLAYLIST ==========
-    const playlist = [
-        { name: 'BAD FOR ME', file: 'songs/BAD FOR ME.mp3' },
-        { name: 'Bruma em Chicago', file: 'songs/Bruma em Chicago.mp3' },
-        { name: 'Fone de Ouvido e Café', file: 'songs/Fone de Ouvido e Café.mp3' },
-        { name: 'Lay Your Cards', file: 'songs/Lay Your Cards.mp3' }
-    ];
-    
-    let currentTrackIndex = 0;
-    let audioElement = null;
-    let isPlaying = false;
-    
-    function initAudio() {
-        if (!audioElement) {
-            audioElement = new Audio();
-            audioElement.volume = 0.3;
-            
-            audioElement.addEventListener('ended', () => {
-                nextTrack();
-            });
-            
-            audioElement.addEventListener('loadedmetadata', () => {
-                const trackNameSpan = document.getElementById('trackName');
-                if (trackNameSpan) {
-                    trackNameSpan.textContent = playlist[currentTrackIndex].name;
-                }
-            });
-            
-            audioElement.addEventListener('error', (e) => {
-                console.error('Erro ao carregar música:', playlist[currentTrackIndex].file);
-                document.getElementById('trackName').textContent = '⚠️ Erro na música';
-            });
-        }
-        
-        audioElement.src = playlist[currentTrackIndex].file;
-        audioElement.load();
-        const trackNameSpan = document.getElementById('trackName');
-        if (trackNameSpan) {
-            trackNameSpan.textContent = playlist[currentTrackIndex].name;
-        }
-    }
-    
-    function startMusic() {
-        initAudio();
-        audioElement.play().then(() => {
-            isPlaying = true;
-            const playBtn = document.getElementById('playPauseBtn');
-            if (playBtn) playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        }).catch(error => {
-            console.log('Usuário precisa interagir primeiro:', error);
-            const trackSpan = document.getElementById('trackName');
-            if (trackSpan) trackSpan.textContent = '🔊 Clique para ativar';
-        });
-    }
-    
-    function stopMusic() {
-        if (audioElement) {
-            audioElement.pause();
-            isPlaying = false;
-            const playBtn = document.getElementById('playPauseBtn');
-            if (playBtn) playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    }
-    
-    function nextTrack() {
-        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-        
-        if (audioElement) {
-            const wasPlaying = isPlaying;
-            audioElement.src = playlist[currentTrackIndex].file;
-            audioElement.load();
-            const trackSpan = document.getElementById('trackName');
-            if (trackSpan) trackSpan.textContent = playlist[currentTrackIndex].name;
-            
-            if (wasPlaying) {
-                audioElement.play().catch(e => console.log(e));
-            }
-        }
-    }
-    
-    function prevTrack() {
-        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-        
-        if (audioElement) {
-            const wasPlaying = isPlaying;
-            audioElement.src = playlist[currentTrackIndex].file;
-            audioElement.load();
-            const trackSpan = document.getElementById('trackName');
-            if (trackSpan) trackSpan.textContent = playlist[currentTrackIndex].name;
-            
-            if (wasPlaying) {
-                audioElement.play().catch(e => console.log(e));
-            }
-        }
-    }
-    
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const prevBtn = document.getElementById('prevTrackBtn');
-    const nextBtn = document.getElementById('nextTrackBtn');
-    
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', () => {
-            if (!audioElement) {
-                startMusic();
-            } else if (isPlaying) {
-                stopMusic();
-            } else {
-                startMusic();
-            }
-        });
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            prevTrack();
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            nextTrack();
-        });
-    }
-    
-    window.addEventListener('load', () => {
-        initAudio();
-    });
+    setTimeout(() => { animateNumber(document.getElementById('stat1'), 166); animateNumber(document.getElementById('stat2'), 4); animateNumber(document.getElementById('stat3'), 3); }, 300);
+
+    // Gráfico de contribuições
+    const chart = document.getElementById('contribChart');
+    const levels = [1,2,3,4,2,1,3,4,2,1,3,4,2,3,1,4,2,3,4,1,2,3,4,2,1,3,2,4];
+    levels.forEach(lvl => { const day = document.createElement('div'); day.className = `chart-day level-${lvl}`; chart.appendChild(day); });
+
+    // Player de música
+    const playlist = [{ name: 'BAD FOR ME', file: 'songs/BAD FOR ME.mp3' },{ name: 'Bruma em Chicago', file: 'songs/Bruma em Chicago.mp3' },{ name: 'Fone de Ouvido e Café', file: 'songs/Fone de Ouvido e Café.mp3' },{ name: 'Lay Your Cards', file: 'songs/Lay Your Cards.mp3' }];
+    let currentTrackIndex = 0, audioElement = null, isPlaying = false;
+    function initAudio() { if (!audioElement) { audioElement = new Audio(); audioElement.volume = 0.3; audioElement.addEventListener('ended', () => nextTrack()); audioElement.addEventListener('loadedmetadata', () => { const span = document.getElementById('trackName'); if(span) span.textContent = playlist[currentTrackIndex].name; }); audioElement.addEventListener('error', () => document.getElementById('trackName').textContent = '⚠️ Erro'); } audioElement.src = playlist[currentTrackIndex].file; audioElement.load(); document.getElementById('trackName').textContent = playlist[currentTrackIndex].name; }
+    function startMusic() { initAudio(); audioElement.play().then(() => { isPlaying = true; document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>'; }).catch(() => document.getElementById('trackName').textContent = '🔊 Clique para ativar'); }
+    function stopMusic() { if(audioElement){ audioElement.pause(); isPlaying = false; document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>'; } }
+    function nextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; if(audioElement){ const wasPlaying = isPlaying; audioElement.src = playlist[currentTrackIndex].file; audioElement.load(); document.getElementById('trackName').textContent = playlist[currentTrackIndex].name; if(wasPlaying) audioElement.play().catch(e=>console.log(e)); } }
+    function prevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; if(audioElement){ const wasPlaying = isPlaying; audioElement.src = playlist[currentTrackIndex].file; audioElement.load(); document.getElementById('trackName').textContent = playlist[currentTrackIndex].name; if(wasPlaying) audioElement.play().catch(e=>console.log(e)); } }
+    const playBtn = document.getElementById('playPauseBtn'), prevBtn = document.getElementById('prevTrackBtn'), nextBtn = document.getElementById('nextTrackBtn');
+    if(playBtn) playBtn.addEventListener('click', () => { if(!audioElement) startMusic(); else if(isPlaying) stopMusic(); else startMusic(); });
+    if(prevBtn) prevBtn.addEventListener('click', prevTrack);
+    if(nextBtn) nextBtn.addEventListener('click', nextTrack);
+    window.addEventListener('load', initAudio);
     </script>
 </body>
 </html>
