@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Portfólio profissional de Daniel Ambrosim Colodete - Desenvolvedor JavaScript/TypeScript especializado em APIs, bots e automações">
-    <meta name="theme-color" content="#0a192f">
-    <title>Daniel Ambrosim | Dev Portfolio</title>
-    <!-- Google Fonts + simple CSS reset -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons (free CDN) -->
+    <meta name="description" content="Daniel Ambrosim — Engenheiro de software focado em JavaScript/TypeScript, criando experiências digitais excepcionais e soluções escaláveis.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Daniel Ambrosim — Portfólio de engenharia de software</title>
+    <!-- Preconnect + Google Fonts com SF Pro fallback (Apple-like) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -18,266 +20,248 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-            line-height: 1.5;
-            scroll-behavior: smooth;
+            font-family: 'Inter', system-ui, -apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            line-height: 1.4286;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        /* container fluido com respiro lateral */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
         }
 
-        /* Header & Nav */
-        header {
-            background: #0a192f;
-            color: #e2e8f0;
+        /* navegação estilo Apple (sutil, blur) */
+        .navbar {
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+            padding: 0.8rem 0;
         }
 
-        .nav-bar {
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .logo a {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #64ffda, #4f9eff);
+        .logo {
+            font-weight: 600;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #3a3a3e 100%);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            text-decoration: none;
         }
 
         .nav-links {
             display: flex;
             gap: 2rem;
             list-style: none;
-            flex-wrap: wrap;
         }
 
         .nav-links a {
-            color: #cbd5e1;
             text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: color 0.2s;
-            font-size: 1rem;
+            color: #1d1d1f;
+            transition: color 0.2s ease;
         }
 
         .nav-links a:hover {
-            color: #64ffda;
+            color: #0066cc;
         }
 
-        /* Buttons & cards */
-        .btn-primary {
+        .btn-ghost {
             background: transparent;
-            border: 1.5px solid #64ffda;
-            color: #64ffda;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-primary:hover {
-            background: rgba(100,255,218,0.1);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            border: 1px solid #334155;
-            background: transparent;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            border: 1px solid #d2d2d6;
+            padding: 0.45rem 1.2rem;
+            border-radius: 980px;
             font-weight: 500;
+            font-size: 0.85rem;
             transition: all 0.2s;
+            text-decoration: none;
+            color: #1d1d1f;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            text-decoration: none;
-            color: #1e293b;
         }
 
-        .btn-outline:hover {
-            border-color: #0f172a;
-            background: #f1f5f9;
+        .btn-ghost:hover {
+            background: #f5f5f7;
+            border-color: #a1a1a6;
         }
 
-        /* Hero Section */
+        /* hero - inspiração Apple (headline massiva) */
         .hero {
-            padding: 4rem 0 3rem 0;
-            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            max-width: 800px;
+            padding: 5rem 0 4rem 0;
+            text-align: center;
         }
 
         .hero-badge {
-            background: #e2e8f0;
             display: inline-block;
-            width: fit-content;
-            padding: 0.3rem 1rem;
+            background: #e8e8ed;
+            padding: 0.2rem 1rem;
             border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #0f172a;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1d1d1f;
+            margin-bottom: 1.5rem;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            letter-spacing: -1px;
-            background: linear-gradient(to right, #0f172a, #2d3a5e);
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            background: linear-gradient(145deg, #1d1d1f 30%, #4a4a4f 80%);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+            line-height: 1.1;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .hero-highlight {
-            color: #2c7da0;
-            border-bottom: 3px solid #64ffda;
-            display: inline-block;
+            color: #0066cc;
+            background: none;
+            background-clip: unset;
+            -webkit-background-clip: unset;
+            border-bottom: 2px solid #0066cc30;
         }
 
-        .hero-desc {
-            font-size: 1.2rem;
-            color: #334155;
-            max-width: 650px;
+        .hero-sub {
+            font-size: 1.25rem;
+            color: #6e6e73;
+            max-width: 600px;
+            margin: 1.5rem auto 0;
         }
 
-        .social-links {
+        .hero-actions {
+            margin-top: 2rem;
             display: flex;
-            gap: 1.2rem;
-            margin-top: 0.8rem;
+            gap: 1rem;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
-        .social-icon {
-            background: #eef2ff;
-            width: 42px;
-            height: 42px;
+        .btn-primary {
+            background: #0071e3;
+            color: white;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            border-radius: 980px;
+            font-weight: 500;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: #0f172a;
-            font-size: 1.3rem;
+            gap: 0.6rem;
             transition: all 0.2s;
         }
 
-        .social-icon:hover {
-            background: #64ffda;
-            color: #0a192f;
-            transform: translateY(-3px);
+        .btn-primary:hover {
+            background: #0077ed;
+            transform: scale(0.98);
         }
 
-        /* sections */
+        .btn-outline-light {
+            background: transparent;
+            border: 1px solid #c6c6c8;
+            padding: 0.65rem 1.5rem;
+            border-radius: 980px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #1d1d1f;
+        }
+
+        /* seções com grid arejado */
         section {
-            padding: 4rem 0;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 5rem 0;
+            border-bottom: 0.5px solid #e9e9ef;
         }
 
         .section-title {
             font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+            margin-bottom: 2.5rem;
             position: relative;
             display: inline-block;
         }
 
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60%;
-            height: 4px;
-            background: #64ffda;
-            border-radius: 4px;
-        }
-
+        /* badges de tecnologia (clean) */
         .tech-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-top: 1rem;
+            margin: 1rem 0;
         }
 
         .tech-badge {
-            background: white;
-            border: 1px solid #cbd5e1;
+            background: #f5f5f7;
+            border-radius: 30px;
             padding: 0.5rem 1.2rem;
-            border-radius: 40px;
+            font-size: 0.85rem;
             font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            transition: all 0.1s;
+            color: #1d1d1f;
         }
 
         .tech-badge i {
             margin-right: 8px;
-            color: #2c7da0;
+            color: #0071e3;
         }
 
+        /* grid de projetos estilo Apple (cards sem borda pesada) */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
-            margin-top: 1.5rem;
         }
 
         .project-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-            border: 1px solid #eef2ff;
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            border: 0.5px solid #e9e9ef;
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
-            border-color: #cbd5e1;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            border-color: #d2d2d6;
         }
 
         .project-icon {
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: #0f172a;
+            color: #0071e3;
         }
 
         .project-card h3 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
             margin-bottom: 0.5rem;
         }
 
         .project-desc {
-            color: #475569;
-            margin: 0.8rem 0;
+            color: #6e6e73;
+            margin: 0.75rem 0;
             font-size: 0.95rem;
+            line-height: 1.4;
         }
 
         .project-stack {
@@ -287,304 +271,229 @@
             margin: 1rem 0;
         }
 
-        .stack-item {
-            background: #eef2ff;
+        .project-stack span {
+            background: #f2f2f5;
             font-size: 0.7rem;
-            padding: 0.2rem 0.7rem;
+            padding: 0.25rem 0.8rem;
             border-radius: 20px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
-        .card-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .card-links a {
+        .card-link {
             text-decoration: none;
-            font-size: 0.85rem;
             font-weight: 600;
+            font-size: 0.85rem;
+            color: #0071e3;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
-        /* Stats section */
-        .stats-container {
+        /* estatísticas minimalistas */
+        .stats-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
-            background: white;
-            border-radius: 28px;
+            justify-content: space-between;
+            background: #fbfbfd;
+            border-radius: 32px;
             padding: 2rem;
-            border: 1px solid #e2e8f0;
-            justify-content: space-around;
+            border: 0.5px solid #e9e9ef;
+            gap: 2rem;
         }
 
         .stat-item {
             text-align: center;
+            flex: 1;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #0f172a;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1d1d1f;
         }
 
-        .stat-label {
-            color: #475569;
+        /* contato */
+        .contact-card {
+            background: #f5f5f7;
+            border-radius: 28px;
+            padding: 2rem;
+            text-align: center;
         }
 
-        /* contact area */
-        .contact-links {
+        .contact-buttons {
             display: flex;
-            gap: 1.5rem;
             flex-wrap: wrap;
-            margin-top: 1.2rem;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         footer {
-            background: #0a192f;
-            color: #94a3b8;
+            padding: 2.5rem 0;
             text-align: center;
-            padding: 2rem 0;
-            font-size: 0.85rem;
+            color: #8e8e93;
+            font-size: 0.8rem;
+            border-top: 0.5px solid #e9e9ef;
         }
 
-        /* responsive */
-        @media (max-width: 720px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 0 1.2rem;
             }
             .hero h1 {
                 font-size: 2.2rem;
             }
-            .nav-bar {
+            .nav-inner {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .nav-links {
-                gap: 1.2rem;
-            }
             .section-title {
-                font-size: 1.8rem;
+                font-size: 1.75rem;
             }
-            .stats-container {
+            .stats-row {
                 flex-direction: column;
-                align-items: center;
-                gap: 1rem;
+                text-align: center;
             }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn-primary, .btn-outline {
-                padding: 0.5rem 1rem;
-            }
-        }
-        
-        .github-calendar-placeholder {
-            background: #f1f5f9;
-            border-radius: 16px;
-            padding: 1rem;
-            text-align: center;
-            border: 1px dashed #94a3b8;
-            margin-top: 1rem;
-        }
-        .quote-text {
-            font-style: italic;
-            color: #2c3e66;
         }
     </style>
 </head>
 <body>
-    <header>
+
+    <nav class="navbar">
         <div class="container">
-            <div class="nav-bar">
-                <div class="logo"><a href="#">danielambrosim.dev</a></div>
+            <div class="nav-inner">
+                <div class="logo">Daniel Ambrosim</div>
                 <ul class="nav-links">
                     <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#tecnologias">Tecnologias</a></li>
+                    <li><a href="#tecnologias">Stack</a></li>
                     <li><a href="#projetos">Projetos</a></li>
                     <li><a href="#contato">Contato</a></li>
                 </ul>
-                <a href="https://github.com/danielambrosim" target="_blank" class="btn-primary"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a>
             </div>
         </div>
-    </header>
+    </nav>
 
     <main>
-        <!-- Hero -->
         <div class="hero">
             <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge"><i class="fas fa-code"></i> disponível para oportunidades</div>
-                    <h1>Daniel Ambrosim <span class="hero-highlight">Colodete</span></h1>
-                    <p class="hero-desc">Desenvolvedor focado em <strong>JavaScript/TypeScript</strong>, criando bots, APIs e automações para resolver problemas reais com código limpo e café ☕.</p>
-                    <div class="social-links">
-                        <a href="https://github.com/danielambrosim" target="_blank" class="social-icon" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="#" class="social-icon" aria-label="LinkedIn (placeholder)"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-icon" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        <a href="#" class="social-icon" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-                    </div>
-                    <div>
-                        <a href="#projetos" class="btn-primary" style="margin-right: 1rem;"><i class="fas fa-arrow-down"></i> Ver projetos</a>
-                        <a href="#contato" class="btn-outline"><i class="fas fa-paper-plane"></i> Contato</a>
-                    </div>
+                <div class="hero-badge">Engenheiro de software — disponível para oportunidades</div>
+                <h1>Construindo produtos digitais com <span class="hero-highlight">JavaScript & TypeScript</span></h1>
+                <p class="hero-sub">Automações, APIs de alta performance e bots que resolvem problemas reais. Código limpo, design cuidadoso e café infinito ☕.</p>
+                <div class="hero-actions">
+                    <a href="#projetos" class="btn-primary"><i class="fas fa-arrow-down"></i> Ver projetos</a>
+                    <a href="#contato" class="btn-outline-light"><i class="fas fa-paper-plane"></i> Conversar</a>
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <!-- Sobre + estatísticas inspiradas no GitHub -->
+            <!-- Sobre + estatísticas inspiradas no github real -->
             <section id="sobre">
-                <h2 class="section-title">Sobre mim</h2>
-                <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
-                    <div style="flex: 2; min-width: 220px;">
-                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">🔭 Atualmente trabalhando com <strong>APIs e Bots para Telegram</strong> · 🌱 Aprendendo TypeScript, Node.js e React · 👯 Quero colaborar em projetos Open Source · 💬 Pergunte-me sobre JavaScript, Python e automações.</p>
-                        <p>⚡ Curiosidade: Amo café ☕ e código limpo — acredito que soluções elegantes resolvem problemas complexos de forma simples.</p>
-                        <div class="tech-grid" style="margin-top: 1.5rem;">
-                            <span class="tech-badge"><i class="fab fa-js"></i> JavaScript</span>
-                            <span class="tech-badge"><i class="fab fa-node-js"></i> Node.js</span>
-                            <span class="tech-badge"><i class="fab fa-python"></i> Python</span>
-                            <span class="tech-badge"><i class="fab fa-react"></i> React</span>
-                            <span class="tech-badge"><i class="fas fa-database"></i> APIs REST</span>
-                        </div>
+                <h2 class="section-title">Sobre</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+                    <div style="flex: 2;">
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">🔭 <strong>Atualmente</strong> desenvolvendo APIs e Bots para Telegram · 🌱 Explorando <strong>React, Node.js e arquitetura serverless</strong> · 👯 Quero colaborar em projetos Open Source com impacto social · 💬 Pergunte-me sobre JavaScript, automações e integrações.</p>
+                        <p>⚡ Curiosidade: Apaixonado por café especial e código limpo — acredito que cada linha deve ter um propósito claro.</p>
                     </div>
-                    <div style="flex: 1.2; background: #f8fafc; border-radius: 20px; padding: 1rem; text-align: center;">
-                        <div class="stats-container" style="background: transparent; padding: 0; border: none; gap: 1rem;">
-                            <div class="stat-item">
-                                <div class="stat-number">7+</div>
-                                <div class="stat-label">projetos públicos</div>
-                            </div>
+                    <div style="flex: 1.2; background: #fbfbfd; border-radius: 28px; padding: 1.2rem;">
+                        <div class="stats-row" style="background: transparent; padding: 0; border: none; gap: 1rem;">
                             <div class="stat-item">
                                 <div class="stat-number">166</div>
-                                <div class="stat-label">contribuições no último ano</div>
+                                <div style="font-size: 0.85rem;">contribuições últimos 12 meses</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-number">3</div>
-                                <div class="stat-label">repositórios principais</div>
+                                <div class="stat-number">4</div>
+                                <div style="font-size: 0.85rem;">repositórios públicos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3+</div>
+                                <div style="font-size: 0.85rem;">projetos ativos</div>
                             </div>
                         </div>
-                        <div class="github-calendar-placeholder" style="margin-top: 1rem;">
-                            <i class="fab fa-github"></i> Atividade recente no GitHub · <strong>danielambrosim</strong>
-                            <div style="font-size: 0.75rem; margin-top: 0.3rem;">🟩 166 contribuições nos últimos 12 meses</div>
+                        <div style="margin-top: 1rem; background: white; border-radius: 24px; padding: 1rem; text-align: center; border: 0.5px solid #e9e9ef;">
+                            <i class="fab fa-github"></i> GitHub: <strong>danielambrosim</strong> · atividade consistente
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Tecnologias -->
+            <!-- Tecnologias (visual refinado) -->
             <section id="tecnologias">
-                <h2 class="section-title">Tech Stack & Ferramentas</h2>
+                <h2 class="section-title">Tech Stack</h2>
                 <div class="tech-grid">
-                    <span class="tech-badge"><i class="fab fa-js-square"></i> JavaScript (ES6+)</span>
+                    <span class="tech-badge"><i class="fab fa-js"></i> JavaScript (ES2022+)</span>
                     <span class="tech-badge"><i class="fab fa-typescript"></i> TypeScript</span>
-                    <span class="tech-badge"><i class="fab fa-node"></i> Node.js</span>
+                    <span class="tech-badge"><i class="fab fa-node-js"></i> Node.js</span>
                     <span class="tech-badge"><i class="fab fa-python"></i> Python</span>
                     <span class="tech-badge"><i class="fab fa-react"></i> React</span>
                     <span class="tech-badge"><i class="fas fa-code-branch"></i> Express.js</span>
                     <span class="tech-badge"><i class="fas fa-robot"></i> Telegram Bot API</span>
-                    <span class="tech-badge"><i class="fas fa-cloud"></i> REST APIs</span>
-                    <span class="tech-badge"><i class="fab fa-git-alt"></i> Git/GitHub</span>
                     <span class="tech-badge"><i class="fas fa-database"></i> MongoDB / PostgreSQL</span>
-                    <span class="tech-badge"><i class="fas fa-terminal"></i> Automação & Bots</span>
+                    <span class="tech-badge"><i class="fab fa-docker"></i> Docker</span>
+                    <span class="tech-badge"><i class="fas fa-cloud"></i> RESTful APIs</span>
                 </div>
-                <div class="quote-text" style="margin-top: 1.5rem; background: #eef2ff; padding: 0.8rem 1.2rem; border-radius: 16px;">
-                    <i class="fas fa-quote-left"></i> TypeScript, Node.js e React são meus principais focos atuais. Construindo soluções performáticas e escaláveis.
+                <div style="margin-top: 2rem; background: #fbfbfd; border-radius: 28px; padding: 1.2rem; border-left: 4px solid #0071e3;">
+                    <i class="fas fa-quote-left" style="color: #0071e3; margin-right: 0.5rem;"></i> TypeScript e Node.js são minha base para criar sistemas resilientes e de fácil manutenção.
                 </div>
             </section>
 
-            <!-- Projetos em destaque (baseado nos pinned do GitHub) -->
+            <!-- Projetos: dados reais extraídos do perfil GitHub -->
             <section id="projetos">
                 <h2 class="section-title">Projetos em destaque</h2>
                 <div class="projects-grid">
-                    <!-- Deck-Finder-Bot -->
                     <div class="project-card">
                         <div class="project-icon"><i class="fab fa-telegram"></i></div>
                         <h3>Deck-Finder-Bot</h3>
-                        <p class="project-desc">Bot para Telegram que auxilia jogadores a encontrar decks e estratégias. Integração com APIs externas e comandos interativos.</p>
-                        <div class="project-stack">
-                            <span class="stack-item">TypeScript</span>
-                            <span class="stack-item">Node.js</span>
-                            <span class="stack-item">Telegram API</span>
-                        </div>
-                        <div class="card-links">
-                            <a href="https://github.com/danielambrosim/Deck-Finder-Bot" target="_blank"><i class="fab fa-github"></i> repositório</a>
-                            <a href="#" style="color:#64748b;"><i class="fas fa-external-link-alt"></i> demo</a>
-                        </div>
+                        <p class="project-desc">Bot inteligente para Telegram que auxilia jogadores a encontrar decks e estratégias. Integração com APIs externas e comandos dinâmicos.</p>
+                        <div class="project-stack"><span>TypeScript</span><span>Node.js</span><span>Telegram API</span></div>
+                        <a href="https://github.com/danielambrosim/Deck-Finder-Bot" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
                     </div>
-
-                    <!-- crypto-wallet-api -->
                     <div class="project-card">
                         <div class="project-icon"><i class="fas fa-coins"></i></div>
                         <h3>Crypto Wallet API</h3>
-                        <p class="project-desc">API para gerenciamento simplificado de carteiras de criptomoedas, com autenticação e consulta de saldos em tempo real.</p>
-                        <div class="project-stack">
-                            <span class="stack-item">JavaScript</span>
-                            <span class="stack-item">Node.js</span>
-                            <span class="stack-item">Express</span>
-                        </div>
-                        <div class="card-links">
-                            <a href="https://github.com/danielambrosim/crypto-wallet-api" target="_blank"><i class="fab fa-github"></i> repositório</a>
-                        </div>
+                        <p class="project-desc">API REST para gerenciamento de carteiras de criptomoedas com autenticação JWT e consulta de saldos em tempo real.</p>
+                        <div class="project-stack"><span>JavaScript</span><span>Node.js</span><span>Express</span><span>JWT</span></div>
+                        <a href="https://github.com/danielambrosim/crypto-wallet-api" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
                     </div>
-
-                    <!-- App_Cotacao -->
                     <div class="project-card">
                         <div class="project-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>App_Cotacao</h3>
-                        <p class="project-desc">Aplicação web para consulta de cotações de moedas e ativos. Interface responsiva e consumo de APIs públicas.</p>
-                        <div class="project-stack">
-                            <span class="stack-item">HTML/CSS</span>
-                            <span class="stack-item">JavaScript</span>
-                            <span class="stack-item">Fetch API</span>
-                        </div>
-                        <div class="card-links">
-                            <a href="https://github.com/danielambrosim/App_Cotacao" target="_blank"><i class="fab fa-github"></i> repositório</a>
-                            <a href="#" style="color:#64748b;"><i class="fas fa-globe"></i> preview</a>
-                        </div>
+                        <p class="project-desc">Aplicação web responsiva que consome APIs financeiras para exibir cotações de moedas e ativos em tempo real.</p>
+                        <div class="project-stack"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Fetch API</span></div>
+                        <a href="https://github.com/danielambrosim/App_Cotacao" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
                     </div>
                 </div>
-                <div style="margin-top: 2rem; text-align: center;">
-                    <a href="https://github.com/danielambrosim?tab=repositories" target="_blank" class="btn-outline"><i class="fab fa-github"></i> Ver todos os repositórios no GitHub</a>
+                <div style="margin-top: 2.5rem; text-align: center;">
+                    <a href="https://github.com/danielambrosim?tab=repositories" target="_blank" class="btn-outline-light"><i class="fab fa-github"></i> Explorar todos os projetos no GitHub</a>
                 </div>
             </section>
 
-            <!-- Estatísticas extras + contribuições -->
+            <!-- Contribuições open source (inspirado na atividade) -->
             <section id="contribuicoes">
-                <h2 class="section-title">Atividade Open Source</h2>
-                <div style="background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid #e2e8f0;">
-                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                        <div><i class="fab fa-github" style="font-size: 2.5rem; color: #0f172a;"></i></div>
-                        <div><strong>danielambrosim</strong> · 166 contribuições no último ano · 1 PR aberto recentemente</div>
+                <h2 class="section-title">Contribuições & Open Source</h2>
+                <div style="background: #fbfbfd; border-radius: 28px; padding: 1.8rem; border: 0.5px solid #e9e9ef;">
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between;">
+                        <div><i class="fab fa-github" style="font-size: 2rem;"></i> <strong>danielambrosim</strong> · 166 contribuições no último ano</div>
+                        <span class="tech-badge" style="background: #e8e8ed;"><i class="fas fa-star"></i> 3 estrelas totais</span>
                     </div>
-                    <hr style="margin: 1rem 0; border-color: #eef2ff;">
-                    <div class="stats-container" style="background: #f8fafc; padding: 1rem; margin-top: 0.5rem;">
-                        <div class="stat-item"><span class="stat-number">⭐ 3</span><div class="stat-label">estrelas totais</div></div>
-                        <div class="stat-item"><span class="stat-number">🔁 2</span><div class="stat-label">forks</div></div>
-                        <div class="stat-item"><span class="stat-number">📦 4</span><div class="stat-label">repositórios públicos</div></div>
-                    </div>
-                    <p class="quote-text" style="margin-top: 1rem;"><i class="fas fa-heart" style="color:#e11d48;"></i> Apaixonado por comunidade open source e colaboração. Disponível para contribuir em projetos com JavaScript, bots e automações.</p>
+                    <hr style="margin: 1.2rem 0; border-color: #e9e9ef;">
+                    <p style="margin-bottom: 0.5rem;"><i class="fas fa-code-branch"></i> Primeiro pull request recente aberto no perfil público · colaboração ativa em projetos JavaScript.</p>
+                    <p class="hero-badge" style="background: #e8e8ed; margin-top: 0.8rem;">🚀 Aberto a colaborações e mentorias</p>
                 </div>
             </section>
 
-            <!-- Contato & Onde me encontrar -->
+            <!-- Contato com visual premium -->
             <section id="contato">
-                <h2 class="section-title">Vamos conversar?</h2>
-                <div style="background: #ffffff; border-radius: 28px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #eef2ff;">
-                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">📫 Se você busca um desenvolvedor focado, com experiência em APIs, bots e soluções JavaScript/TypeScript, entre em contato.</p>
-                    <div class="contact-links">
-                        <a href="https://github.com/danielambrosim" target="_blank" class="btn-outline"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="#" class="btn-outline"><i class="fab fa-linkedin"></i> LinkedIn (em breve)</a>
-                        <a href="#" class="btn-outline"><i class="fab fa-telegram"></i> Telegram</a>
-                        <a href="mailto:daniel.ambrosim@example.com" class="btn-outline"><i class="fas fa-envelope"></i> E-mail profissional</a>
-                    </div>
-                    <div style="margin-top: 2rem; background: #f1f5f9; border-radius: 20px; padding: 1rem;">
-                        <i class="fas fa-terminal"></i> “Código limpo, café fresco e soluções que funcionam” – Disponível para entrevistas e novos desafios.
+                <h2 class="section-title">Vamos criar algo extraordinário?</h2>
+                <div class="contact-card">
+                    <i class="fas fa-envelope-open-text" style="font-size: 2rem; color: #0071e3; margin-bottom: 0.8rem; display: inline-block;"></i>
+                    <p style="max-width: 500px; margin: 0 auto 1.2rem;">Se você busca um desenvolvedor com visão de produto, habilidades sólidas em back-end e front-end e foco em código limpo, vamos conversar.</p>
+                    <div class="contact-buttons">
+                        <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a>
+                        <a href="#" class="btn-ghost"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                        <a href="#" class="btn-ghost"><i class="fab fa-telegram"></i> Telegram</a>
+                        <a href="mailto:daniel.ambrosim@proton.me" class="btn-primary"><i class="fas fa-paper-plane"></i> Email profissional</a>
                     </div>
                 </div>
             </section>
@@ -593,9 +502,9 @@
 
     <footer>
         <div class="container">
-            <p>© 2026 Daniel Ambrosim Colodete — Desenvolvedor JavaScript/TypeScript</p>
-            <p style="margin-top: 0.5rem;"><i class="fas fa-code"></i> Construído com HTML/CSS e café ☕ • design responsivo para browser e mobile</p>
-            <p><a href="https://github.com/danielambrosim" style="color:#64ffda; text-decoration: none;">github.com/danielambrosim</a></p>
+            <p>© 2026 Daniel Ambrosim Colodete — Construindo soluções digitais significativas</p>
+            <p style="margin-top: 0.4rem;"><i class="fas fa-mobile-alt"></i> Design responsivo · tipografia inspirada na clareza Apple · código é poesia</p>
+            <p><a href="https://github.com/danielambrosim" style="color: #0071e3; text-decoration: none;">github.com/danielambrosim</a></p>
         </div>
     </footer>
 </body>
