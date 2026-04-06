@@ -613,148 +613,162 @@
     </footer>
 
     <script>
-        // TEMA CLARO/ESCURO
-        const themeToggle = document.getElementById('themeToggle');
-        const iconTheme = themeToggle.querySelector('i');
-        
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            if (theme === 'dark') {
-                iconTheme.classList.remove('fa-moon');
-                iconTheme.classList.add('fa-sun');
-            } else {
-                iconTheme.classList.remove('fa-sun');
-                iconTheme.classList.add('fa-moon');
-            }
-        }
-        
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTheme('dark');
+    // ========== TEMA CLARO/ESCURO (mantido) ==========
+    const themeToggle = document.getElementById('themeToggle');
+    const iconTheme = themeToggle.querySelector('i');
+    
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+            iconTheme.classList.remove('fa-moon');
+            iconTheme.classList.add('fa-sun');
         } else {
+            iconTheme.classList.remove('fa-sun');
+            iconTheme.classList.add('fa-moon');
+        }
+    }
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+    } else {
+        setTheme('light');
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        if (current === 'dark') {
             setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+    });
+    
+    // ========== PLAYER DE MÚSICA COM PLAYLIST (MÉTODO 4) ==========
+    // ⚠️ CONFIGURE SUA PLAYLIST AQUI - SUBSTITUA PELOS SEUS ARQUIVOS ⚠️
+    const playlist = [
+        { name: 'BAD FOR ME', file: 'songs/BAD FOR ME.mp3' },
+        { name: 'Bruma em Chicago', file: 'songs/Bruma em Chicago.mp3' },
+        { name: 'Fone de Ouvido e Café', file: 'songs/Fone de Ouvido e Café.mp3' },
+        { name: 'Lay Your Cards', file: 'songs/Lay Your Cards.mp3' }
+    ];
+    
+    let currentTrackIndex = 0;
+    let audioElement = null;
+    let isPlaying = false;
+    
+    // Inicializar áudio
+    function initAudio() {
+        if (!audioElement) {
+            audioElement = new Audio();
+            audioElement.volume = 0.3; // Volume entre 0 e 1 (30% recomendado)
+            
+            // Quando a música acabar, toca a próxima automaticamente
+            audioElement.addEventListener('ended', () => {
+                nextTrack();
+            });
+            
+            // Atualizar nome da música quando carregar
+            audioElement.addEventListener('loadedmetadata', () => {
+                document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+            });
         }
         
-        themeToggle.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme');
-            if (current === 'dark') {
-                setTheme('light');
-            } else {
-                setTheme('dark');
-            }
+        // Carregar música atual
+        audioElement.src = playlist[currentTrackIndex].file;
+        audioElement.load();
+        document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+    }
+    
+    // Tocar música atual
+    function startMusic() {
+        initAudio();
+        audioElement.play().then(() => {
+            isPlaying = true;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+        }).catch(error => {
+            console.log('Usuário precisa interagir primeiro:', error);
+            document.getElementById('trackName').textContent = '🔊 Clique para ativar';
         });
-        
-        // MÚSICA EM LOOP (usando AudioContext para não precisar de arquivo externo - geramos um som ambiente suave estilo lo-fi)
-        // Criamos um oscilador simples e um buffer de áudio para gerar um ambiente calmo. 
-        // Para não depender de arquivos externos e funcionar em qualquer lugar, usamos Web Audio API para gerar um som ambiente suave e contínuo.
-        let audioContext = null;
-        let sourceNode = null;
-        let gainNode = null;
-        let isPlaying = false;
-        let mediaStreamSource = null;
-        
-        // Função para criar um som ambiente simples (onda senoidal suave + ruído baixo)
-        function createAmbientSound() {
-            if (audioContext && audioContext.state !== 'closed') {
-                audioContext.close();
-            }
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            gainNode = audioContext.createGain();
-            gainNode.gain.value = 0.15; // volume baixo e agradável
-            
-            const now = audioContext.currentTime;
-            // Gerar um tom suave e constante (frequência relaxante)
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = 'sine';
-            oscillator.frequency.value = 261.63; // C4 médio, suave
-            oscillator.connect(gainNode);
-            
-            // Pequeno ruído para dar textura lo-fi
-            const bufferSize = 4096;
-            const noiseNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
-            noiseNode.onaudioprocess = function(e) {
-                const output = e.outputBuffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    output[i] = (Math.random() - 0.5) * 0.05; // ruído muito baixo
-                }
-            };
-            
-            gainNode.connect(audioContext.destination);
-            oscillator.start();
-            noiseNode.connect(gainNode);
-            
-            // Loop infinito: quando o oscilador terminar, recriar? Na verdade oscilador toca até parar, mas para loop perfeito, podemos apenas deixar rodando.
-            // Mas para garantir loop suave, o oscilador toca continuamente.
-            // Guardar referência para possível parada
-            return { oscillator, noiseNode };
+    }
+    
+    // Pausar música
+    function stopMusic() {
+        if (audioElement) {
+            audioElement.pause();
+            isPlaying = false;
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
         }
+    }
+    
+    // Próxima música
+    function nextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
         
-        let currentOscillator = null;
-        let currentNoise = null;
-        
-        function startMusic() {
-            if (audioContext && audioContext.state === 'running') return;
-            if (!audioContext) {
-                const { oscillator, noiseNode } = createAmbientSound();
-                currentOscillator = oscillator;
-                currentNoise = noiseNode;
-                audioContext.resume().then(() => {
-                    isPlaying = true;
-                    document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
-                });
-            } else {
-                audioContext.resume().then(() => {
-                    isPlaying = true;
-                    document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
-                });
+        if (audioElement) {
+            const wasPlaying = isPlaying;
+            audioElement.src = playlist[currentTrackIndex].file;
+            audioElement.load();
+            document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+            
+            if (wasPlaying) {
+                audioElement.play().catch(e => console.log(e));
             }
         }
+    }
+    
+    // Música anterior
+    function prevTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
         
-        function stopMusic() {
-            if (audioContext && audioContext.state === 'running') {
-                audioContext.suspend().then(() => {
-                    isPlaying = false;
-                    document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
-                });
-            } else {
-                isPlaying = false;
-                document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+        if (audioElement) {
+            const wasPlaying = isPlaying;
+            audioElement.src = playlist[currentTrackIndex].file;
+            audioElement.load();
+            document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+            
+            if (wasPlaying) {
+                audioElement.play().catch(e => console.log(e));
             }
         }
-        
-        const playPauseBtn = document.getElementById('playPauseBtn');
+    }
+    
+    // Configurar botões (verifica se existem no DOM)
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevTrackBtn');
+    const nextBtn = document.getElementById('nextTrackBtn');
+    
+    if (playPauseBtn) {
         playPauseBtn.addEventListener('click', () => {
-            if (!audioContext) {
-                // Inicializa e toca
+            if (!audioElement) {
                 startMusic();
-            } else if (audioContext.state === 'running') {
+            } else if (isPlaying) {
                 stopMusic();
             } else {
                 startMusic();
             }
         });
-        
-        // Inicializar sem tocar automaticamente (respeita políticas de autoplay do navegador)
-        // O usuário precisa clicar no play para iniciar a música.
-        // Garantir que ao carregar a página, o audioContext existe mas não inicia.
-        window.addEventListener('load', () => {
-            // Pré-criar o contexto mas não iniciar (para evitar bloqueio)
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                // Não iniciar automaticamente
-            }
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevTrack();
         });
-        
-        // Opcional: permitir que o usuário interaja com qualquer lugar para ativar áudio (política de navegador)
-        document.body.addEventListener('click', function initAudioOnFirstClick() {
-            if (audioContext && audioContext.state === 'suspended' && !isPlaying) {
-                // Não iniciar automaticamente só por clique em qualquer lugar, mas apenas se o usuário quiser clicar no play.
-                // Deixamos comportamento padrão.
-            }
-        }, { once: false });
-    </script>
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextTrack();
+        });
+    }
+    
+    // Pré-inicializar (sem tocar automaticamente)
+    window.addEventListener('load', () => {
+        initAudio();
+    });
+</script>
 </body>
 </html>
