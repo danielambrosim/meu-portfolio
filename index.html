@@ -372,15 +372,231 @@
 
     <footer><div class="container"><p>© 2026 Daniel Ambrosim Colodete</p><p style="margin-top: 0.4rem;"><i class="fas fa-mobile-alt"></i> Design responsivo · modo escuro disponível · música ambiente opcional</p><p><a href="https://github.com/danielambrosim" style="color: var(--accent); text-decoration: none;">github.com/danielambrosim</a></p></div></footer>
     <script>
-    // Tema
+    // ========== MULTI-THEME SYSTEM ==========
+// Definição dos temas disponíveis
+const themes = {
+    light: {
+        name: 'Claro',
+        icon: 'fa-sun',
+        colors: {
+            '--bg-primary': '#ffffff',
+            '--bg-secondary': '#f5f5f7',
+            '--bg-card': '#ffffff',
+            '--text-primary': '#1d1d1f',
+            '--text-secondary': '#6e6e73',
+            '--border-color': '#e9e9ef',
+            '--border-hover': '#d2d2d6',
+            '--accent': '#0071e3',
+            '--accent-hover': '#0077ed',
+            '--navbar-bg': 'rgba(255, 255, 255, 0.92)',
+            '--badge-bg': '#e8e8ed',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.1)'
+        }
+    },
+    dark: {
+        name: 'Escuro',
+        icon: 'fa-moon',
+        colors: {
+            '--bg-primary': '#000000',
+            '--bg-secondary': '#1c1c1e',
+            '--bg-card': '#1c1c1e',
+            '--text-primary': '#ffffff',
+            '--text-secondary': '#a1a1a6',
+            '--border-color': '#2c2c2e',
+            '--border-hover': '#3a3a3c',
+            '--accent': '#0a84ff',
+            '--accent-hover': '#409cff',
+            '--navbar-bg': 'rgba(0, 0, 0, 0.85)',
+            '--badge-bg': '#2c2c2e',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.5)'
+        }
+    },
+    purple: {
+        name: 'Roxo',
+        icon: 'fa-gem',
+        colors: {
+            '--bg-primary': '#0a0a14',
+            '--bg-secondary': '#1a1a2e',
+            '--bg-card': '#16162a',
+            '--text-primary': '#f0f0ff',
+            '--text-secondary': '#a0a0c0',
+            '--border-color': '#2a2a4a',
+            '--border-hover': '#3a3a5a',
+            '--accent': '#a855f7',
+            '--accent-hover': '#c084fc',
+            '--navbar-bg': 'rgba(10, 10, 20, 0.85)',
+            '--badge-bg': '#2a2a4a',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(168, 85, 247, 0.15)'
+        }
+    },
+    green: {
+        name: 'Verde',
+        icon: 'fa-leaf',
+        colors: {
+            '--bg-primary': '#0a1a0a',
+            '--bg-secondary': '#1a2e1a',
+            '--bg-card': '#162a16',
+            '--text-primary': '#e0ffe0',
+            '--text-secondary': '#a0c0a0',
+            '--border-color': '#2a4a2a',
+            '--border-hover': '#3a5a3a',
+            '--accent': '#10b981',
+            '--accent-hover': '#34d399',
+            '--navbar-bg': 'rgba(10, 26, 10, 0.85)',
+            '--badge-bg': '#2a4a2a',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(16, 185, 129, 0.15)'
+        }
+    },
+    orange: {
+        name: 'Laranja',
+        icon: 'fa-fire',
+        colors: {
+            '--bg-primary': '#1a0e06',
+            '--bg-secondary': '#2e1c10',
+            '--bg-card': '#2a180e',
+            '--text-primary': '#fff0e0',
+            '--text-secondary': '#c0a090',
+            '--border-color': '#4a2e1a',
+            '--border-hover': '#5a3e2a',
+            '--accent': '#f97316',
+            '--accent-hover': '#fb923c',
+            '--navbar-bg': 'rgba(26, 14, 6, 0.85)',
+            '--badge-bg': '#4a2e1a',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(249, 115, 22, 0.15)'
+        }
+    },
+    pink: {
+        name: 'Rosa',
+        icon: 'fa-heart',
+        colors: {
+            '--bg-primary': '#1a0a14',
+            '--bg-secondary': '#2e1a26',
+            '--bg-card': '#2a1622',
+            '--text-primary': '#ffe0f0',
+            '--text-secondary': '#c0a0b0',
+            '--border-color': '#4a2a3a',
+            '--border-hover': '#5a3a4a',
+            '--accent': '#ec4899',
+            '--accent-hover': '#f472b6',
+            '--navbar-bg': 'rgba(26, 10, 20, 0.85)',
+            '--badge-bg': '#4a2a3a',
+            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--card-shadow-hover': '0 20px 35px -12px rgba(236, 72, 153, 0.15)'
+        }
+    }
+};
+
+// Aplicar tema
+function applyTheme(themeName) {
+    const theme = themes[themeName];
+    if (!theme) return;
+    
+    const root = document.documentElement;
+    for (const [property, value] of Object.entries(theme.colors)) {
+        root.style.setProperty(property, value);
+    }
+    
+    // Atualizar atributo e salvar
+    root.setAttribute('data-theme', themeName);
+    localStorage.setItem('selectedTheme', themeName);
+    
+    // Atualizar ícone do botão de tema
+    const themeToggleIcon = document.querySelector('#themeToggle i');
+    if (themeToggleIcon) {
+        themeToggleIcon.className = `fas ${theme.icon}`;
+    }
+    
+    // Atualizar tooltip
     const themeToggle = document.getElementById('themeToggle');
-    const iconTheme = themeToggle.querySelector('i');
-    function setTheme(theme) { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); if (theme === 'dark') { iconTheme.classList.remove('fa-moon'); iconTheme.classList.add('fa-sun'); } else { iconTheme.classList.remove('fa-sun'); iconTheme.classList.add('fa-moon'); } }
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) setTheme(savedTheme);
-    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
-    else setTheme('light');
-    themeToggle.addEventListener('click', () => { const current = document.documentElement.getAttribute('data-theme'); setTheme(current === 'dark' ? 'light' : 'dark'); });
+    if (themeToggle) {
+        themeToggle.setAttribute('aria-label', `Tema: ${theme.name}`);
+    }
+}
+
+// Criar seletor de temas
+function createThemeSelector() {
+    const selector = document.createElement('div');
+    selector.id = 'themeSelector';
+    selector.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        left: 90px;
+        z-index: 200;
+        background: var(--bg-card);
+        border-radius: 48px;
+        padding: 0.4rem 0.8rem;
+        display: flex;
+        gap: 0.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border: 0.5px solid var(--border-color);
+        backdrop-filter: blur(10px);
+    `;
+    
+    const themeList = ['light', 'dark', 'purple', 'green', 'orange', 'pink'];
+    themeList.forEach(themeName => {
+        const theme = themes[themeName];
+        const btn = document.createElement('button');
+        btn.innerHTML = `<i class="fas ${theme.icon}"></i>`;
+        btn.style.cssText = `
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        `;
+        btn.setAttribute('aria-label', `Tema ${theme.name}`);
+        btn.addEventListener('click', () => applyTheme(themeName));
+        btn.addEventListener('mouseenter', () => {
+            btn.style.background = 'rgba(var(--accent-rgb), 0.2)';
+            btn.style.transform = 'scale(1.1)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.background = 'transparent';
+            btn.style.transform = 'scale(1)';
+        });
+        selector.appendChild(btn);
+    });
+    
+    document.body.appendChild(selector);
+}
+
+// Carregar tema salvo ou detectar preferência
+const savedTheme = localStorage.getItem('selectedTheme');
+if (savedTheme && themes[savedTheme]) {
+    applyTheme(savedTheme);
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    applyTheme('dark');
+} else {
+    applyTheme('light');
+}
+
+// Criar seletor de temas após o DOM carregar
+document.addEventListener('DOMContentLoaded', () => {
+    createThemeSelector();
+});
+
+// Alternador rápido (mantido para compatibilidade)
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const themesList = ['light', 'dark', 'purple', 'green', 'orange', 'pink'];
+        let nextIndex = (themesList.indexOf(current) + 1) % themesList.length;
+        applyTheme(themesList[nextIndex]);
+    });
+}
 
     // Contador animado
     function animateNumber(element, final, duration = 1500) {
