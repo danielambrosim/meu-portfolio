@@ -1247,3 +1247,14 @@ footer a {
 .preview-dark { background: #0a84ff; }
 .preview-purple { background: #a855f7; }
 .preview-orange { background: #f97316; }
+
+/* Responsividade de texto para os vídeos*/
+.videos-quote {
+  text-align: center;
+  font-style: italic;
+  animation: slide 10s infinite alternate;
+}
+@keyframes slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(20px); }
+}
