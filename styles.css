@@ -1042,3 +1042,10 @@ footer a {
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ========== TRANSIÇÃO SUAVE PARA TODOS OS ELEMENTOS ========== */
+* {
+    transition-property: background-color, background, color, border-color, box-shadow, text-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
