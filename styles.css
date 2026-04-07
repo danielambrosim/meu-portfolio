@@ -1049,3 +1049,106 @@ footer a {
     transition-duration: 0.3s;
     transition-timing-function: ease;
 }
+
+/* ========== SELETOR DE TEMAS EM ABA ========== */
+
+/* Wrapper: o container que agrupa botão + aba */
+.theme-selector-wrapper {
+    position: fixed;     /* fica fixo na tela mesmo rolando */
+    bottom: 24px;        /* distância do fundo */
+    left: 24px;          /* distância da esquerda */
+    z-index: 200;        /* fica sobre outros elementos */
+}
+
+/* Botão principal (o que você clica para abrir) */
+.theme-toggle-main {
+    background: var(--bg-card);
+    border-radius: 48px;  /* borda bem arredondada */
+    padding: 0.6rem 1rem;
+    border: 0.5px solid var(--border-color);
+    cursor: pointer;
+    backdrop-filter: blur(10px);  /* efeito vidro */
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Efeito ao passar o mouse no botão */
+.theme-toggle-main:hover {
+    transform: scale(1.05);  /* aumenta 5% */
+}
+
+/* Texto dentro do botão */
+.theme-toggle-main span {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* ABA/DROPDOWN (inicialmente escondida) */
+.theme-dropdown {
+    position: absolute;
+    bottom: 60px;          /* aparece ACIMA do botão */
+    left: 0;
+    background: var(--bg-card);
+    border-radius: 28px;
+    padding: 0.8rem;
+    border: 0.5px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    opacity: 0;            /* invisível */
+    visibility: hidden;    /* não interage com clique */
+    transform: translateY(10px); /* ligeiramente deslocada */
+    transition: all 0.3s ease;
+}
+
+/* Quando a aba está aberta (ativa) */
+.theme-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);  /* volta à posição original */
+}
+
+/* Cada opção de tema dentro da aba */
+.theme-option {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+}
+
+/* Efeito ao passar o mouse na opção */
+.theme-option:hover {
+    background: rgba(var(--accent-rgb), 0.15);
+    transform: translateX(5px);  /* desliza para direita */
+}
+
+/* Bolinha colorida que mostra a cor do tema */
+.theme-color-preview {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+/* Cores específicas para cada tema */
+.preview-light { background: #0071e3; }
+.preview-dark { background: #0a84ff; }
+.preview-purple { background: #a855f7; }
+.preview-orange { background: #f97316; }
