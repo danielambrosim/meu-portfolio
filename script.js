@@ -305,13 +305,42 @@ function stopMusic() {
     }
 }
 
+// Função para mostrar notificação da música (só no celular)
+function showMusicToast(trackName) {
+    // Verifica se é celular (tela pequena)
+    if (window.innerWidth <= 768) {
+        let toast = document.querySelector('.music-toast');
+        
+        // Se não existir, cria
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'music-toast';
+            document.body.appendChild(toast);
+        }
+        
+        // Atualiza o conteúdo e mostra
+        toast.innerHTML = `<i class="fas fa-music"></i> ${trackName}`;
+        toast.classList.add('show');
+        
+        // Remove após 2 segundos
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+}
+
 function nextTrack() {
     currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
     if (audioElement) {
         const wasPlaying = isPlaying;
         audioElement.src = playlist[currentTrackIndex].file;
         audioElement.load();
-        document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+        const trackName = playlist[currentTrackIndex].name;
+        document.getElementById('trackName').textContent = trackName;
+        
+        // Mostra notificação (no celular)
+        showMusicToast(trackName);
+        
         if (wasPlaying) {
             audioElement.play().catch(e => console.log(e));
         }
@@ -324,11 +353,29 @@ function prevTrack() {
         const wasPlaying = isPlaying;
         audioElement.src = playlist[currentTrackIndex].file;
         audioElement.load();
-        document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
+        const trackName = playlist[currentTrackIndex].name;
+        document.getElementById('trackName').textContent = trackName;
+        
+        // Mostra notificação (no celular)
+        showMusicToast(trackName);
+        
         if (wasPlaying) {
             audioElement.play().catch(e => console.log(e));
         }
     }
+}
+
+function startMusic() {
+    initAudio();
+    audioElement.play().then(() => {
+        isPlaying = true;
+        document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+        
+        // Mostra notificação da música atual (no celular)
+        showMusicToast(playlist[currentTrackIndex].name);
+    }).catch(() => {
+        document.getElementById('trackName').textContent = '🔊 Clique para ativar';
+    });
 }
 
 const playBtn = document.getElementById('playPauseBtn');
