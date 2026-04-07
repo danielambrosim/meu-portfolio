@@ -1043,11 +1043,11 @@ footer a {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-/* Para tablets e celulares grandes */
+/* Tablets e celulares grandes (até 768px) */
 @media (max-width: 768px) {
-    /* Botão do tema: esconde o texto, só mostra ícone */
+    /* ===== BOTÃO DO TEMA ===== */
     .theme-toggle-main span {
-        display: none;
+        display: none;  /* esconde o texto "Claro", "Escuro", etc */
     }
     
     .theme-toggle-main {
@@ -1057,17 +1057,13 @@ footer a {
         justify-content: center;
     }
     
-    .theme-toggle-main i:first-child {
-        margin-right: 0;
-    }
-    
     .theme-toggle-main i.fa-chevron-down {
         display: none;  /* esconde a setinha */
     }
     
-    /* Player de música: esconde o nome da música */
+    /* ===== PLAYER DE MÚSICA ===== */
     .music-player span {
-        display: none;
+        display: none;  /* esconde o nome da música atual */
     }
     
     .music-player {
@@ -1076,20 +1072,19 @@ footer a {
     }
     
     .music-player button {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
     }
     
-    /* Aba: ajusta posição para não sair da tela */
+    /* ===== ABA DO TEMA ===== */
     .theme-dropdown {
         bottom: auto;
-        top: auto;
         bottom: 60px;
         left: 0;
     }
 }
 
-/* Para celulares muito pequenos (até 480px) */
+/* Celulares muito pequenos (até 480px) */
 @media (max-width: 480px) {
     .theme-toggle-main,
     .music-player {
@@ -1098,7 +1093,48 @@ footer a {
     
     .theme-dropdown {
         bottom: 55px;
-        left: -10px;
+        left: -5px;
+    }
+}
+
+/* ===== NOTIFICAÇÃO FLUTUANTE (TOOLTIP) ===== */
+.music-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 48px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 300;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 0.5px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+}
+
+.music-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.music-toast i {
+    color: var(--accent);
+    margin-right: 0.5rem;
+}
+
+/* Desktop: notificação não aparece (já tem o nome no player) */
+@media (min-width: 769px) {
+    .music-toast {
+        display: none;
     }
 }
 
