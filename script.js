@@ -62,27 +62,7 @@ const themes = {
             '--card-shadow-hover': '0 20px 35px -12px rgba(168, 85, 247, 0.15)'
         }
     },
-    green: {
-        name: 'Verde',
-        icon: 'fa-leaf',
-        colors: {
-            '--bg-primary': '#0a1a0a',
-            '--bg-secondary': '#1a2e1a',
-            '--bg-card': '#162a16',
-            '--text-primary': '#e0ffe0',
-            '--text-secondary': '#a0c0a0',
-            '--border-color': '#2a4a2a',
-            '--border-hover': '#3a5a3a',
-            '--accent': '#10b981',
-            '--accent-hover': '#34d399',
-            '--accent-rgb': '16, 185, 129',
-            '--navbar-bg': 'rgba(10, 26, 10, 0.85)',
-            '--badge-bg': '#2a4a2a',
-            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(16, 185, 129, 0.15)'
-        }
-    },
-    orange: {
+  orange: {
         name: 'Laranja',
         icon: 'fa-fire',
         colors: {
@@ -100,26 +80,6 @@ const themes = {
             '--badge-bg': '#4a2e1a',
             '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
             '--card-shadow-hover': '0 20px 35px -12px rgba(249, 115, 22, 0.15)'
-        }
-    },
-    pink: {
-        name: 'Rosa',
-        icon: 'fa-heart',
-        colors: {
-            '--bg-primary': '#1a0a14',
-            '--bg-secondary': '#2e1a26',
-            '--bg-card': '#2a1622',
-            '--text-primary': '#ffe0f0',
-            '--text-secondary': '#c0a0b0',
-            '--border-color': '#4a2a3a',
-            '--border-hover': '#5a3a4a',
-            '--accent': '#ec4899',
-            '--accent-hover': '#f472b6',
-            '--accent-rgb': '236, 72, 153',
-            '--navbar-bg': 'rgba(26, 10, 20, 0.85)',
-            '--badge-bg': '#4a2a3a',
-            '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(236, 72, 153, 0.15)'
         }
     }
 };
