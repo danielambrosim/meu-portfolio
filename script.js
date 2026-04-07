@@ -1,10 +1,11 @@
-// ========== SISTEMA DE TEMAS (CLARO/ESCURO + CORES) ==========
+// ========== SISTEMA DE TEMAS ==========
 
-// Definição de todos os temas disponíveis com suas cores
+// Definição dos temas (APENAS 4: Claro, Escuro, Roxo, Laranja)
 const themes = {
     light: {
         name: 'Claro',
         icon: 'fa-sun',
+        previewColor: '#0071e3',
         colors: {
             '--bg-primary': '#ffffff',
             '--bg-secondary': '#f5f5f7',
@@ -25,6 +26,7 @@ const themes = {
     dark: {
         name: 'Escuro',
         icon: 'fa-moon',
+        previewColor: '#0a84ff',
         colors: {
             '--bg-primary': '#000000',
             '--bg-secondary': '#1c1c1e',
@@ -45,6 +47,7 @@ const themes = {
     purple: {
         name: 'Roxo',
         icon: 'fa-gem',
+        previewColor: '#a855f7',
         colors: {
             '--bg-primary': '#0a0a14',
             '--bg-secondary': '#1a1a2e',
@@ -62,9 +65,10 @@ const themes = {
             '--card-shadow-hover': '0 20px 35px -12px rgba(168, 85, 247, 0.15)'
         }
     },
-  orange: {
+    orange: {
         name: 'Laranja',
         icon: 'fa-fire',
+        previewColor: '#f97316',
         colors: {
             '--bg-primary': '#1a0e06',
             '--bg-secondary': '#2e1c10',
@@ -84,91 +88,112 @@ const themes = {
     }
 };
 
-// Função para aplicar um tema específico
+// Função que aplica o tema escolhido
 function applyTheme(themeName) {
     const theme = themes[themeName];
     if (!theme) return;
     
-    // Pega o elemento raiz do HTML (tag <html>)
-    const root = document.documentElement;
+    const root = document.documentElement; // pega a tag <html>
     
-    // Aplica cada variável CSS definida no tema
+    // Percorre todas as cores do tema e aplica como variável CSS
     for (const [property, value] of Object.entries(theme.colors)) {
         root.style.setProperty(property, value);
     }
     
-    // Salva o atributo data-theme no HTML e no localStorage
+    // Salva qual tema está ativo no HTML e no localStorage
     root.setAttribute('data-theme', themeName);
     localStorage.setItem('selectedTheme', themeName);
     
-    // Atualiza o ícone do botão de tema
-    const themeToggleIcon = document.querySelector('#themeToggle i');
-    if (themeToggleIcon) {
-        themeToggleIcon.className = `fas ${theme.icon}`;
+    // Atualiza o ícone e texto do botão principal
+    const mainToggleIcon = document.querySelector('#themeToggleMain i');
+    if (mainToggleIcon) {
+        mainToggleIcon.className = `fas ${theme.icon}`;
+    }
+    
+    const mainToggleText = document.querySelector('#themeToggleMain span');
+    if (mainToggleText) {
+        mainToggleText.textContent = theme.name;
     }
 }
 
-// Cria o seletor de temas (as bolinhas coloridas)
+// Função que CRIA o seletor de temas (botão + aba)
 function createThemeSelector() {
-    // Remove seletor antigo para evitar duplicação
-    const existingSelector = document.getElementById('themeSelector');
-    if (existingSelector) existingSelector.remove();
+    // Remove seletor antigo se existir (evita duplicação)
+    const existingWrapper = document.querySelector('.theme-selector-wrapper');
+    if (existingWrapper) existingWrapper.remove();
     
-    // Cria o container do seletor
-    const selector = document.createElement('div');
-    selector.id = 'themeSelector';
-    selector.style.cssText = `
-        position: fixed;
-        bottom: 24px;
-        left: 90px;
-        z-index: 200;
-        background: var(--bg-card);
-        border-radius: 48px;
-        padding: 0.4rem 0.8rem;
-        display: flex;
-        gap: 0.5rem;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        border: 0.5px solid var(--border-color);
-        backdrop-filter: blur(10px);
+    // Cria o container principal
+    const wrapper = document.createElement('div');
+    wrapper.className = 'theme-selector-wrapper';
+    
+    // Descobre qual tema está ativo para mostrar no botão
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const currentThemeData = themes[currentTheme];
+    
+    // Cria o BOTÃO PRINCIPAL
+    const mainBtn = document.createElement('button');
+    mainBtn.id = 'themeToggleMain';
+    mainBtn.className = 'theme-toggle-main';
+    mainBtn.innerHTML = `
+        <i class="fas ${currentThemeData.icon}"></i>
+        <span>${currentThemeData.name}</span>
+        <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 0.3rem;"></i>
     `;
     
-    // Cria um botão para cada tema
-    const themeList = ['light', 'dark', 'purple', 'green', 'orange', 'pink'];
+    // Cria a ABA (dropdown) que fica escondida inicialmente
+    const dropdown = document.createElement('div');
+    dropdown.className = 'theme-dropdown';
+    
+    // Lista dos temas disponíveis (apenas 4)
+    const themeList = ['light', 'dark', 'purple', 'orange'];
+    
+    // Para cada tema, cria uma opção dentro da aba
     themeList.forEach(themeName => {
         const theme = themes[themeName];
-        const btn = document.createElement('button');
-        btn.innerHTML = `<i class="fas ${theme.icon}"></i>`;
-        btn.style.cssText = `
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-size: 0.9rem;
+        const option = document.createElement('button');
+        option.className = 'theme-option';
+        option.innerHTML = `
+            <i class="fas ${theme.icon}"></i>
+            <span>${theme.name}</span>
+            <div class="theme-color-preview preview-${themeName}"></div>
         `;
-        btn.setAttribute('aria-label', `Tema ${theme.name}`);
-        btn.addEventListener('click', () => applyTheme(themeName));
-        btn.addEventListener('mouseenter', () => {
-            btn.style.background = 'rgba(var(--accent-rgb), 0.2)';
-            btn.style.transform = 'scale(1.1)';
+        
+        // Quando clicar na opção, aplica o tema e fecha a aba
+        option.addEventListener('click', () => {
+            applyTheme(themeName);
+            dropdown.classList.remove('active'); // fecha a aba
+            
+            // Atualiza o botão principal com o novo tema
+            mainBtn.innerHTML = `
+                <i class="fas ${theme.icon}"></i>
+                <span>${theme.name}</span>
+                <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 0.3rem;"></i>
+            `;
         });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.background = 'transparent';
-            btn.style.transform = 'scale(1)';
-        });
-        selector.appendChild(btn);
+        
+        dropdown.appendChild(option);
     });
     
-    document.body.appendChild(selector);
+    // Quando clicar no botão principal, ABRE ou FECHA a aba
+    mainBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // impede que o clique "vaze" para fora
+        dropdown.classList.toggle('active'); // alterna entre aberto/fechado
+    });
+    
+    // Quando clicar em qualquer lugar FORA do seletor, fecha a aba
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+    
+    // Monta o seletor na página
+    wrapper.appendChild(mainBtn);
+    wrapper.appendChild(dropdown);
+    document.body.appendChild(wrapper);
 }
 
-// Carrega o tema salvo ou detecta preferência do sistema
+// ========== CARREGAR TEMA SALVO ==========
 const savedTheme = localStorage.getItem('selectedTheme');
 if (savedTheme && themes[savedTheme]) {
     applyTheme(savedTheme);
@@ -178,25 +203,19 @@ if (savedTheme && themes[savedTheme]) {
     applyTheme('light');
 }
 
-// Cria o seletor de temas
+// Remove o botão antigo (se existir) e cria o novo seletor
+const oldThemeToggle = document.getElementById('themeToggle');
+if (oldThemeToggle) oldThemeToggle.remove();
+
 createThemeSelector();
 
-// Botão principal de alternância (cicla entre os temas)
-const themeToggle = document.getElementById('themeToggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme');
-        const themesList = ['light', 'dark', 'purple', 'green', 'orange', 'pink'];
-        let nextIndex = (themesList.indexOf(current) + 1) % themesList.length;
-        applyTheme(themesList[nextIndex]);
-    });
-}
+// ========== O RESTO DO CÓDIGO PERMANECE IGUAL ==========
+// (contadores, gráfico e player de música - não mudam)
 
-// ========== CONTADOR ANIMADO ==========
-// Faz os números subirem de 0 até o valor final suavemente
+// Contador animado
 function animateNumber(element, final, duration = 1500) {
     let start = 0;
-    let stepTime = 16; // 60fps (1000ms / 60 ≈ 16ms)
+    let stepTime = 16;
     let steps = duration / stepTime;
     let increment = final / steps;
     let current = 0;
@@ -212,7 +231,6 @@ function animateNumber(element, final, duration = 1500) {
     }, stepTime);
 }
 
-// Inicia os contadores após um pequeno delay
 setTimeout(() => {
     const stat1 = document.getElementById('stat1');
     const stat2 = document.getElementById('stat2');
@@ -222,11 +240,9 @@ setTimeout(() => {
     if (stat3) animateNumber(stat3, 3);
 }, 300);
 
-// ========== GRÁFICO DE CONTRIBUIÇÕES ==========
-// Cria os quadradinhos coloridos simulando atividade do GitHub
+// Gráfico de contribuições
 const chart = document.getElementById('contribChart');
 if (chart) {
-    // Níveis de atividade (1=baixa, 4=alta)
     const levels = [1,2,3,4,2,1,3,4,2,1,3,4,2,3,1,4,2,3,4,1,2,3,4,2,1,3,2,4];
     levels.forEach(lvl => {
         const day = document.createElement('div');
@@ -235,8 +251,7 @@ if (chart) {
     });
 }
 
-// ========== PLAYER DE MÚSICA ==========
-// Lista de músicas (você pode adicionar ou remover)
+// Player de música
 const playlist = [
     { name: 'BAD FOR ME', file: 'songs/BAD FOR ME.mp3' },
     { name: 'Bruma em Chicago', file: 'songs/Bruma em Chicago.mp3' },
@@ -248,24 +263,20 @@ let currentTrackIndex = 0;
 let audioElement = null;
 let isPlaying = false;
 
-// Inicializa o player de áudio
 function initAudio() {
     if (!audioElement) {
         audioElement = new Audio();
-        audioElement.volume = 0.3; // Volume 30%
+        audioElement.volume = 0.3;
         
-        // Quando a música acabar, toca a próxima
         audioElement.addEventListener('ended', () => {
             nextTrack();
         });
         
-        // Quando carregar, mostra o nome da música
         audioElement.addEventListener('loadedmetadata', () => {
             const span = document.getElementById('trackName');
             if (span) span.textContent = playlist[currentTrackIndex].name;
         });
         
-        // Em caso de erro (arquivo não encontrado)
         audioElement.addEventListener('error', () => {
             document.getElementById('trackName').textContent = '⚠️ Erro';
         });
@@ -276,7 +287,6 @@ function initAudio() {
     document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
 }
 
-// Toca a música atual
 function startMusic() {
     initAudio();
     audioElement.play().then(() => {
@@ -287,7 +297,6 @@ function startMusic() {
     });
 }
 
-// Pausa a música
 function stopMusic() {
     if (audioElement) {
         audioElement.pause();
@@ -296,7 +305,6 @@ function stopMusic() {
     }
 }
 
-// Próxima música
 function nextTrack() {
     currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
     if (audioElement) {
@@ -310,7 +318,6 @@ function nextTrack() {
     }
 }
 
-// Música anterior
 function prevTrack() {
     currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
     if (audioElement) {
@@ -324,7 +331,6 @@ function prevTrack() {
     }
 }
 
-// Conecta os botões do player
 const playBtn = document.getElementById('playPauseBtn');
 const prevBtn = document.getElementById('prevTrackBtn');
 const nextBtn = document.getElementById('nextTrackBtn');
@@ -349,5 +355,4 @@ if (nextBtn) {
     nextBtn.addEventListener('click', nextTrack);
 }
 
-// Inicializa o player quando a página carregar
 window.addEventListener('load', initAudio);
