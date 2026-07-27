@@ -256,6 +256,47 @@
                         <a href="mailto:dambrosimcolodete@gmail.com" class="btn-primary"><i class="fas fa-paper-plane"></i> Email profissional</a>
                     </div>
                 </div>
+
+                <!-- Card de captação de currículo -->
+                <div class="resume-card">
+                    <div class="resume-card-header">
+                        <i class="fas fa-file-pdf"></i>
+                        <div>
+                            <h3>Quer meu currículo em PDF?</h3>
+                            <p>Preencha os dados abaixo e eu te envio o link para download no seu e-mail na hora.</p>
+                        </div>
+                    </div>
+
+                    <form id="resumeForm" class="resume-form-grid" novalidate>
+                        <div class="form-group">
+                            <label for="resumeName" class="sr-only">Nome</label>
+                            <input type="text" id="resumeName" name="resumeName" placeholder="Seu nome" autocomplete="name" required minlength="2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resumeEmail" class="sr-only">E-mail</label>
+                            <input type="email" id="resumeEmail" name="resumeEmail" placeholder="seu@email.com" autocomplete="email" required>
+                        </div>
+
+                        <!-- Honeypot anti-spam: campo invisível para humanos, bots costumam preenchê-lo -->
+                        <div class="form-group honeypot-field" aria-hidden="true">
+                            <label for="resumeWebsite">Não preencha este campo</label>
+                            <input type="text" id="resumeWebsite" name="resumeWebsite" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div class="form-group form-consent full-width">
+                            <input type="checkbox" id="resumeConsent" name="resumeConsent" required>
+                            <label for="resumeConsent">Concordo em receber este e-mail com o link do currículo.</label>
+                        </div>
+
+                        <div class="full-width">
+                            <button type="submit" class="btn-primary" id="resumeSubmitBtn">
+                                <i class="fas fa-paper-plane"></i> <span id="resumeSubmitText">Receber currículo</span>
+                            </button>
+                            <p class="form-feedback" id="resumeFeedback" role="status" aria-live="polite"></p>
+                        </div>
+                    </form>
+                </div>
             </section>
         </div>
     </main>
@@ -278,6 +319,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

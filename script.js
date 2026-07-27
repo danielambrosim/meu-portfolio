@@ -1,3 +1,19 @@
+// ========== CONFIGURAÇÃO DO EMAILJS ==========
+// 1. Crie/acesse sua conta em https://www.emailjs.com/
+// 2. EMAILJS_PUBLIC_KEY: painel EmailJS > Account > General > "Public Key"
+// 3. EMAILJS_TEMPLATE_ID: painel EmailJS > Email Templates > abra (ou crie) o template usado
+//    para este e-mail > o ID aparece no topo da página do template (ex: "template_xxxxxxx")
+//    O template deve usar as variáveis: {{to_name}}, {{to_email}}, {{resume_url}}
+// EMAILJS_SERVICE_ID já está configurado (Gmail conectado via painel EmailJS)
+const EMAILJS_PUBLIC_KEY = 'COLE_AQUI_SUA_PUBLIC_KEY';
+const EMAILJS_TEMPLATE_ID = 'COLE_AQUI_SEU_TEMPLATE_ID';
+const EMAILJS_SERVICE_ID = 'service_o3v8d0h';
+const RESUME_PDF_URL = 'https://danielambrosim.github.io/meu-portfolio/curriculo-daniel-ambrosim-colodete.pdf';
+
+if (window.emailjs && !EMAILJS_PUBLIC_KEY.startsWith('COLE_AQUI')) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
 // ========== SISTEMA DE TEMAS ==========
 
 // Definição dos temas (APENAS 4: Claro, Escuro, Roxo, Laranja)
@@ -403,3 +419,95 @@ if (nextBtn) {
 }
 
 window.addEventListener('load', initAudio);
+
+// ========== FORMULÁRIO DE CAPTAÇÃO DE CURRÍCULO ==========
+const resumeForm = document.getElementById('resumeForm');
+if (resumeForm) {
+    const resumeSubmitBtn = document.getElementById('resumeSubmitBtn');
+    const resumeSubmitText = document.getElementById('resumeSubmitText');
+    const resumeFeedback = document.getElementById('resumeFeedback');
+
+    function setResumeFeedback(message, type) {
+        resumeFeedback.textContent = message;
+        resumeFeedback.className = type ? `form-feedback ${type}` : 'form-feedback';
+    }
+
+    resumeForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        setResumeFeedback('', null);
+
+        const nameField = document.getElementById('resumeName');
+        const emailField = document.getElementById('resumeEmail');
+        const consentField = document.getElementById('resumeConsent');
+        const honeypotField = document.getElementById('resumeWebsite');
+
+        // Honeypot preenchido indica bot: ignora o envio silenciosamente
+        if (honeypotField.value) return;
+
+        const name = nameField.value.trim();
+        const email = emailField.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (name.length < 2) {
+            setResumeFeedback('Digite um nome válido (mínimo 2 caracteres).', 'error');
+            return;
+        }
+
+        if (!emailRegex.test(email)) {
+            setResumeFeedback('Digite um e-mail válido.', 'error');
+            return;
+        }
+
+        if (!consentField.checked) {
+            setResumeFeedback('É necessário concordar em receber este e-mail para continuar.', 'error');
+            return;
+        }
+
+        if (!window.emailjs || EMAILJS_PUBLIC_KEY.startsWith('COLE_AQUI') || EMAILJS_TEMPLATE_ID.startsWith('COLE_AQUI')) {
+            setResumeFeedback('Envio indisponível no momento. Tente novamente mais tarde.', 'error');
+            return;
+        }
+
+        resumeSubmitBtn.disabled = true;
+        resumeSubmitText.textContent = 'Enviando...';
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            to_name: name,
+            to_email: email,
+            resume_url: RESUME_PDF_URL
+        }).then(() => {
+            setResumeFeedback('Currículo enviado! Verifique sua caixa de entrada.', 'success');
+            resumeForm.reset();
+        }).catch(() => {
+            setResumeFeedback('Erro ao enviar. Tente novamente em instantes.', 'error');
+        }).finally(() => {
+            resumeSubmitBtn.disabled = false;
+            resumeSubmitText.textContent = 'Receber currículo';
+        });
+    });
+}
+
+// ========== MICROINTERAÇÕES DE SCROLL (REVEAL) ==========
+const revealTargets = document.querySelectorAll(
+    'main section, .project-card, .video-card, .stat-card, .resume-card, .contact-card'
+);
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (revealTargets.length) {
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+        revealTargets.forEach(el => el.classList.add('reveal-visible'));
+    } else {
+        revealTargets.forEach(el => el.classList.add('reveal'));
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+        revealTargets.forEach(el => revealObserver.observe(el));
+    }
+}

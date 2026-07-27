@@ -891,6 +891,125 @@ section {
     margin-top: 1.5rem;
 }
 
+/* ========== CARD DE CURRÍCULO ========== */
+.resume-card {
+    background: var(--bg-secondary);
+    border-radius: 28px;
+    padding: 2rem;
+    border: 0.5px solid var(--border-color);
+    margin-top: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.resume-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.resume-card-header i {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-top: 0.2rem;
+}
+
+.resume-card-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.resume-card-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.resume-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: left;
+    position: relative;
+}
+
+.resume-form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"] {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Honeypot: invisível para humanos, presente para bots */
+.honeypot-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.form-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.form-consent input[type="checkbox"] {
+    margin-top: 0.2rem;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.form-consent label {
+    cursor: pointer;
+}
+
+.form-feedback {
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    margin-top: 0.8rem;
+}
+
+.form-feedback.success { color: #22c55e; }
+.form-feedback.error { color: #ef4444; }
+
+/* Classe utilitária: esconde visualmente mas mantém acessível a leitores de tela */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ========== GRÁFICO DE CONTRIBUIÇÕES ========== */
 .contrib-chart {
     display: flex;
@@ -1024,6 +1143,8 @@ footer a {
     .stat-number { font-size: 1.5rem; }
     .stat-card { padding: 0.75rem; }
     .github-header { flex-direction: column; align-items: flex-start; }
+    .resume-form-grid { grid-template-columns: 1fr; }
+    .resume-card { padding: 1.5rem; }
     .music-player { bottom: 16px; right: 16px; padding: 0.4rem 0.8rem; gap: 0.4rem; }
     .music-player button { width: 28px; height: 28px; }
     .theme-toggle { bottom: 16px; left: 16px; padding: 0.4rem 0.8rem; }
@@ -1041,6 +1162,18 @@ footer a {
 
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ========== SCROLL REVEAL (fade + slide-in) ========== */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Tablets e celulares grandes (até 768px) */
