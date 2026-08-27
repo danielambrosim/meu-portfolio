@@ -211,15 +211,15 @@
                                 </div>
                             </div>
                             <div class="github-badges">
-                                <span class="tech-badge static"><i class="fab fa-github"></i> 166 contribuições</span>
-                                <span class="tech-badge static"><i class="fas fa-star"></i> 3 estrelas</span>
-                                <span class="tech-badge static"><i class="fas fa-code-branch"></i> 4 repositórios</span>
+                                <span class="tech-badge static" id="badgeContribs"><i class="fab fa-github"></i> <span>166</span> contribuições</span>
+                                <span class="tech-badge static" id="badgeStars"><i class="fas fa-star"></i> <span>3</span> estrelas</span>
+                                <span class="tech-badge static" id="badgeRepos"><i class="fas fa-code-branch"></i> <span>4</span> repositórios</span>
                             </div>
                         </div>
                         
                         <div class="progress-bar">
-                            <div class="progress-label"><span>Contribuições este ano</span><span><strong>166</strong> / 200</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 83%;"></div></div>
+                            <div class="progress-label"><span>Contribuições este ano</span><span><strong id="progressCount">166</strong> / 200</span></div>
+                            <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 83%;"></div></div>
                         </div>
                         
                         <hr class="divider">
@@ -241,9 +241,9 @@
                     </div>
                     
                     <!-- Linguagens mais usadas -->
-                    <div class="languages-card">
-                        <div class="languages-header"><i class="fas fa-chart-pie"></i><h3>Linguagens mais utilizadas</h3></div>
-                        <div class="languages-grid">
+                    <div class="languages-card" id="languagesCard">
+                        <div class="languages-header"><i class="fas fa-chart-pie"></i><h3>Linguagens mais utilizadas</h3><span id="langUpdated" style="margin-left:auto;font-size:0.7rem;color:var(--text-secondary)"></span></div>
+                        <div class="languages-grid" id="languagesGrid">
                             <div><div class="lang-label"><span>TypeScript</span><span>45%</span></div><div class="lang-bar"><div class="lang-fill" style="width: 45%; background: #3178c6;"></div></div></div>
                             <div><div class="lang-label"><span>JavaScript</span><span>30%</span></div><div class="lang-bar"><div class="lang-fill" style="width: 30%; background: #f7df1e;"></div></div></div>
                             <div><div class="lang-label"><span>Python</span><span>15%</span></div><div class="lang-bar"><div class="lang-fill" style="width: 15%; background: #3776ab;"></div></div></div>

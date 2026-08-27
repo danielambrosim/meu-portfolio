@@ -230,42 +230,122 @@ createThemeSelector();
 
 // Contador animado
 function animateNumber(element, final, duration = 1500) {
-    let start = 0;
     let stepTime = 16;
     let steps = duration / stepTime;
     let increment = final / steps;
     let current = 0;
-    
     let interval = setInterval(() => {
         current += increment;
-        if (current >= final) {
-            element.textContent = final;
-            clearInterval(interval);
-        } else {
-            element.textContent = Math.floor(current);
-        }
+        if (current >= final) { element.textContent = final; clearInterval(interval); }
+        else { element.textContent = Math.floor(current); }
     }, stepTime);
 }
 
-setTimeout(() => {
-    const stat1 = document.getElementById('stat1');
-    const stat2 = document.getElementById('stat2');
-    const stat3 = document.getElementById('stat3');
-    if (stat1) animateNumber(stat1, 166);
-    if (stat2) animateNumber(stat2, 4);
-    if (stat3) animateNumber(stat3, 3);
-}, 300);
+// Dados GitHub — híbrido: tenta data/github.json (gerado pela Action), depois API ao vivo, com cache e fallback estático
+const GITHUB_USER = 'danielambrosim';
+const GITHUB_CACHE_KEY = 'gh_cache_v1';
+const GITHUB_CACHE_TTL = 1000 * 60 * 60 * 6; // 6h
+const FALLBACK_DATA = { contribs: 166, repos: 4, stars: 3, projects: 3, languages: { TypeScript:45, JavaScript:30, Python:15, 'HTML/CSS':10 }, contribLevels: [1,2,3,4,2,1,3,4,2,1,3,4,2,3,1,4,2,3,4,1,2,3,4,2,1,3,2,4] };
 
-// Gráfico de contribuições
-const chart = document.getElementById('contribChart');
-if (chart) {
-    const levels = [1,2,3,4,2,1,3,4,2,1,3,4,2,3,1,4,2,3,4,1,2,3,4,2,1,3,2,4];
+function renderContribChart(levels){
+    const chart = document.getElementById('contribChart');
+    if(!chart) return;
+    chart.innerHTML='';
     levels.forEach(lvl => {
         const day = document.createElement('div');
-        day.className = `chart-day level-${lvl}`;
+        day.className = `chart-day level-${Math.max(1,Math.min(4,lvl))}`;
         chart.appendChild(day);
     });
 }
+function renderLanguages(langs){
+    const grid = document.getElementById('languagesGrid');
+    const updated = document.getElementById('langUpdated');
+    if(!grid || !langs) return;
+    const colors = { TypeScript:'#3178c6', JavaScript:'#f7df1e', Python:'#3776ab', 'HTML':'#e34c26', 'HTML/CSS':'#e34c26', CSS:'#563d7c', Shell:'#89e051', Dockerfile:'#384d54' };
+    const entries = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,4);
+    grid.innerHTML = entries.map(([name, pct]) => `<div><div class="lang-label"><span>${name}</span><span>${pct}%</span></div><div class="lang-bar"><div class="lang-fill" style="width:${pct}%; background:${colors[name]||'var(--accent)'};"></div></div></div>`).join('');
+    if(updated) updated.textContent = 'ao vivo';
+}
+function renderStats(d){
+    const s1=document.getElementById('stat1'), s2=document.getElementById('stat2'), s3=document.getElementById('stat3');
+    if(s1) animateNumber(s1, d.contribs ?? FALLBACK_DATA.contribs);
+    if(s2) animateNumber(s2, d.repos ?? FALLBACK_DATA.repos);
+    if(s3) animateNumber(s3, d.projects ?? FALLBACK_DATA.projects);
+    const bC=document.querySelector('#badgeContribs span'), bS=document.querySelector('#badgeStars span'), bR=document.querySelector('#badgeRepos span');
+    if(bC) bC.textContent = d.contribs ?? FALLBACK_DATA.contribs;
+    if(bS) bS.textContent = d.stars ?? FALLBACK_DATA.stars;
+    if(bR) bR.textContent = d.repos ?? FALLBACK_DATA.repos;
+    const pc=document.getElementById('progressCount'), pf=document.getElementById('progressFill');
+    const pct = Math.min(100, Math.round(((d.contribs||0)/200)*100));
+    if(pc) pc.textContent = d.contribs ?? FALLBACK_DATA.contribs;
+    if(pf) pf.style.width = pct+'%';
+    if(d.languages) renderLanguages(d.languages);
+    if(d.contribLevels) renderContribChart(d.contribLevels);
+}
+async function fetchGitHubLive(){
+    // 1) tenta cache local
+    try{
+        const cached = JSON.parse(localStorage.getItem(GITHUB_CACHE_KEY)||'null');
+        if(cached && Date.now() - cached._ts < GITHUB_CACHE_TTL) return cached.data;
+    }catch{}
+    // 2) tenta data/github.json (Action)
+    try{
+        const r = await fetch('data/github.json', {cache:'no-store'});
+        if(r.ok){ const j=await r.json(); if(j && j.contribs){ localStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify({_ts:Date.now(), data:j})); return j; } }
+    }catch{}
+    // 3) fetch ao vivo da API pública
+    try{
+        const [userRes, reposRes] = await Promise.all([
+            fetch(`https://api.github.com/users/${GITHUB_USER}`, {headers:{Accept:'application/vnd.github.v3+json'}}),
+            fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`, {headers:{Accept:'application/vnd.github.v3+json'}})
+        ]);
+        if(!userRes.ok || !reposRes.ok) throw new Error('GitHub API rate limit ou erro');
+        const user = await userRes.json();
+        const repos = await reposRes.json();
+        const reposCount = user.public_repos ?? repos.length;
+        const stars = repos.reduce((s,r)=> s + (r.stargazers_count||0), 0);
+        const projects = repos.filter(r=>!r.fork).length;
+        // linguagens agregadas
+        const langBytes = {};
+        repos.forEach(r=>{ if(r.language) langBytes[r.language]=(langBytes[r.language]||0)+1; });
+        const totalLang = Object.values(langBytes).reduce((a,b)=>a+b,0) || 1;
+        const languages = {};
+        Object.entries(langBytes).sort((a,b)=>b[1]-a[1]).slice(0,4).forEach(([k,v])=> languages[k]=Math.round((v/totalLang)*100));
+        // contribuições: tenta endpoint deno, senão estima
+        let contribs = FALLBACK_DATA.contribs;
+        let contribLevels = FALLBACK_DATA.contribLevels;
+        try{
+            const cRes = await fetch(`https://github-contributions-api.deno.dev/${GITHUB_USER}.json`);
+            if(cRes.ok){
+                const cj = await cRes.json();
+                const year = cj.contributions?.at(-1)?.contributions || cj.totalContributions;
+                if(typeof cj.totalContributions === 'number') contribs = cj.totalContributions;
+                else if(Array.isArray(cj.contributions)) contribs = cj.contributions.flat().reduce((a,w)=>a + (w.contributionCount||0),0);
+                // gera levels 0-4 a partir de contributionCount
+                if(Array.isArray(cj.contributions)){
+                    const days = cj.contributions.flat().slice(-28).map(d=> d.contributionCount);
+                    const max = Math.max(1, ...days);
+                    contribLevels = days.map(c=> c===0?1: c<=max*0.25?1: c<=max*0.5?2: c<=max*0.75?3:4);
+                }
+            }
+        }catch{}
+        const data = { contribs, repos: reposCount, stars, projects, languages, contribLevels, updatedAt: new Date().toISOString(), source:'live' };
+        localStorage.setItem(GITHUB_CACHE_KEY, JSON.stringify({_ts:Date.now(), data}));
+        return data;
+    }catch(e){
+        console.warn('[GitHub] live fetch falhou, usando fallback', e);
+        return null;
+    }
+}
+(async function initGitHubStats(){
+    // render inicial com fallback animado rápido
+    setTimeout(()=> renderStats(FALLBACK_DATA), 300);
+    const live = await fetchGitHubLive();
+    if(live) {
+        // re-anima com dados reais após 600ms
+        setTimeout(()=> renderStats(live), 600);
+    }
+})();
 
 // Player de música
 const playlist = [
