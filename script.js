@@ -491,10 +491,10 @@ if (resumeForm) {
 const revealTargets = document.querySelectorAll(
     'main section, .project-card, .video-card, .stat-card, .resume-card, .contact-card'
 );
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const _prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (revealTargets.length) {
-    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    if (_prefersReducedMotion || !('IntersectionObserver' in window)) {
         revealTargets.forEach(el => el.classList.add('reveal-visible'));
     } else {
         revealTargets.forEach(el => el.classList.add('reveal'));
@@ -511,3 +511,229 @@ if (revealTargets.length) {
         revealTargets.forEach(el => revealObserver.observe(el));
     }
 }
+
+// ========== HERO STARFIELD (canvas) ==========
+(function initStarfield(){
+    const canvas = document.getElementById('starfield');
+    if(!canvas) return;
+    if(_prefersReducedMotion) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, stars=[], rafId=null;
+    let mouseX=0, mouseY=0;
+    const STAR_COUNT_DESKTOP=180, STAR_COUNT_MOBILE=80;
+    function resize(){
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio||1, 2);
+        w = rect.width; h = rect.height;
+        canvas.width = w*dpr; canvas.height = h*dpr;
+        canvas.style.width = w+'px'; canvas.style.height = h+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        const count = window.innerWidth < 768 ? STAR_COUNT_MOBILE : STAR_COUNT_DESKTOP;
+        stars = Array.from({length: count}, () => ({
+            x: Math.random()*w,
+            y: Math.random()*h,
+            r: Math.random()*1.4+0.2,
+            o: Math.random()*0.6+0.2,
+            tw: Math.random()*0.03+0.005,
+            vx: (Math.random()-0.5)*0.2,
+            depth: Math.random()*0.8+0.2
+        }));
+    }
+    function tick(){
+        ctx.clearRect(0,0,w,h);
+        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0071e3';
+        stars.forEach(s=>{
+            s.x += s.vx + mouseX*s.depth*0.02;
+            s.o += s.tw * (Math.random()>0.5?1:-1);
+            s.o = Math.max(0.15, Math.min(0.9, s.o));
+            if(s.x < 0) s.x = w;
+            if(s.x > w) s.x = 0;
+            // subtle color variation
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+            ctx.fillStyle = s.r > 1 ? accent : `rgba(255,255,255,${s.o})`;
+            // for larger stars use accent with alpha
+            if(s.r > 1){
+                ctx.globalAlpha = s.o*0.9;
+            } else {
+                ctx.globalAlpha = s.o;
+            }
+            ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+        // shooting star occasionally
+        if(Math.random() < 0.008){
+            const sx = Math.random()*w*0.6;
+            const sy = Math.random()*h*0.4;
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(sx+60, sy+12);
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        rafId = requestAnimationFrame(tick);
+    }
+    window.addEventListener('mousemove', e=>{
+        const rect = canvas.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left)/w -0.5)*2;
+        mouseY = ((e.clientY - rect.top)/h -0.5)*2;
+    }, {passive:true});
+    window.addEventListener('resize', resize);
+    resize();
+    tick();
+    document.addEventListener('visibilitychange', ()=>{
+        if(document.hidden) cancelAnimationFrame(rafId);
+        else tick();
+    });
+})();
+
+// ========== HERO TYPING (highlight) ==========
+(function heroTyping(){
+    if(_prefersReducedMotion) return;
+    const el = document.getElementById('heroTyping');
+    if(!el) return;
+    const words = ['Lógica da Programação','TypeScript','APIs Escaláveis','Produto & Código'];
+    let wi=0, ci=words[0].length, deleting=false;
+    const typeSpeed=90, deleteSpeed=45, holdTime=1800, pauseBetween=300;
+    function tick(){
+        const word = words[wi];
+        if(!deleting){
+            ci++;
+            el.textContent = word.slice(0, ci);
+            if(ci===word.length){
+                deleting=true;
+                setTimeout(tick, holdTime);
+                return;
+            }
+            setTimeout(tick, typeSpeed);
+        } else {
+            ci--;
+            el.textContent = word.slice(0, ci);
+            if(ci===0){
+                deleting=false;
+                wi=(wi+1)%words.length;
+                setTimeout(tick, pauseBetween);
+                return;
+            }
+            setTimeout(tick, deleteSpeed);
+        }
+    }
+    setTimeout(tick, 3200);
+})();
+
+// ========== FLEET FILTER + MODAL ==========
+(function fleet(){
+    const grid = document.getElementById('projectsGrid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.project-card[data-project]');
+    const modal = document.getElementById('projectModal');
+    if(!grid || !modal) return;
+    const modalClose = document.getElementById('modalClose');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalStack = document.getElementById('modalStack');
+    const modalLink = document.getElementById('modalLink');
+    const modalCopy = document.getElementById('modalCopy');
+    const data = {
+        deck: { title:'Deck-Finder-Bot', desc:'Bot inteligente para Telegram que auxilia jogadores a encontrar decks, estratégias e meta analysis com integração à API do jogo. Feito com TypeScript + Telegraf.', icon:'<i class="fab fa-telegram"></i>', stack:['TypeScript','Node.js','Telegram API','Telegraf'], link:'https://github.com/danielambrosim/Deck-Finder-Bot' },
+        crypto: { title:'Crypto Wallet API', desc:'API REST resiliente para carteiras de criptomoedas com autenticação JWT, controle de saldo e histórico. Express + JWT + validação robusta.', icon:'<i class="fas fa-coins"></i>', stack:['JavaScript','Node.js','Express','JWT'], link:'https://github.com/danielambrosim/crypto-wallet-api' },
+        cotacao: { title:'App_Cotacao', desc:'Aplicação web responsiva que consome APIs financeiras em tempo real, com cache e UI otimizada para mobile.', icon:'<i class="fas fa-chart-line"></i>', stack:['HTML5','CSS3','JavaScript','Fetch API'], link:'https://github.com/danielambrosim/App_Cotacao' }
+    };
+    filterBtns.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+            filterBtns.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const f = btn.dataset.filter;
+            cards.forEach(c=>{
+                const tech = (c.dataset.tech||'').toLowerCase();
+                const show = f==='all' || tech.includes(f);
+                c.classList.toggle('filtered-out', !show);
+                if(show){ c.classList.remove('reveal-visible'); void c.offsetWidth; c.classList.add('reveal-visible'); }
+            });
+        });
+    });
+    function open(key, cardEl){
+        const d = data[key];
+        if(!d) return;
+        modalTitle.textContent = d.title;
+        modalDesc.textContent = d.desc;
+        modalIcon.innerHTML = d.icon;
+        modalStack.innerHTML = d.stack.map(s=>`<span>${s}</span>`).join('');
+        modalLink.href = d.link;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        modalClose.focus();
+    }
+    function close(){
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+    }
+    cards.forEach(c=>{
+        c.addEventListener('click', ()=> open(c.dataset.project, c));
+        c.addEventListener('keydown', e=>{
+            if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(c.dataset.project, c); }
+        });
+        // tilt effect desktop
+        if(window.innerWidth>768 && !_prefersReducedMotion){
+            c.addEventListener('mousemove', e=>{
+                const r=c.getBoundingClientRect();
+                const x=(e.clientX - r.left)/r.width -0.5;
+                const y=(e.clientY - r.top)/r.height -0.5;
+                c.style.transform=`translateY(-6px) rotateY(${x*6}deg) rotateX(${-y*6}deg)`;
+            });
+            c.addEventListener('mouseleave', ()=>{ c.style.transform=''; });
+        }
+    });
+    modalClose.addEventListener('click', close);
+    modalBackdrop.addEventListener('click', close);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) close(); });
+    modalCopy.addEventListener('click', async ()=>{
+        try{ await navigator.clipboard.writeText(modalLink.href); modalCopy.innerHTML='<i class="fas fa-check"></i> Copiado!'; setTimeout(()=> modalCopy.innerHTML='<i class="fas fa-link"></i> Copiar link',1500);}catch{}
+    });
+})();
+
+// ========== NAVBAR ORBITAL (hamburger + scroll spy + progress + hide on scroll) ==========
+(function navbarOrbital(){
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.getElementById('navLinks');
+    const toggle = document.getElementById('navToggle');
+    const overlay = document.getElementById('navOverlay');
+    const progress = document.getElementById('navProgress');
+    const linkEls = document.querySelectorAll('.nav-links a[data-section]');
+    if(!navbar || !navLinks || !toggle) return;
+    function openMenu(){ navLinks.classList.add('open'); toggle.classList.add('open'); toggle.setAttribute('aria-expanded','true'); overlay.classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeMenu(){ navLinks.classList.remove('open'); toggle.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); overlay.classList.remove('show'); document.body.style.overflow=''; }
+    toggle.addEventListener('click', ()=> navLinks.classList.contains('open') ? closeMenu() : openMenu());
+    if(overlay) overlay.addEventListener('click', closeMenu);
+    linkEls.forEach(a=> a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+    // scroll progress + hide on scroll
+    let lastY = window.scrollY;
+    function onScroll(){
+        const y = window.scrollY;
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        const p = docH>0 ? y/docH : 0;
+        if(progress) progress.style.transform = `scaleX(${p})`;
+        if(y>80) navbar.classList.add('nav-scrolled'); else navbar.classList.remove('nav-scrolled');
+        // hide when scrolling down, show when up
+        if(y > lastY && y>200 && !navLinks.classList.contains('open')) navbar.classList.add('nav-hidden');
+        else navbar.classList.remove('nav-hidden');
+        lastY = y;
+        // scroll spy
+        let current='';
+        document.querySelectorAll('main section[id]').forEach(sec=>{
+            const top = sec.offsetTop - 140;
+            if(y >= top) current = sec.id;
+        });
+        linkEls.forEach(a=> a.classList.toggle('active', a.dataset.section===current));
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+    // close menu on resize to desktop
+    window.addEventListener('resize', ()=>{ if(window.innerWidth>768) closeMenu(); });
+})();

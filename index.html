@@ -22,37 +22,51 @@
 </head>
 <body>
 
-    <!-- ========== NAVEGAÇÃO ========== -->
-    <nav class="navbar">
+    <!-- ========== NAVEGAÇÃO ORBITAL ========== -->
+    <nav class="navbar" id="navbar" aria-label="Navegação principal">
         <div class="container">
             <div class="nav-inner">
                 <div class="logo">Daniel Ambrosim Colodete</div>
-                <ul class="nav-links">
-                    <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#tecnologias">Stack</a></li>
-                    <li><a href="#projetos">Projetos</a></li>
-                    <li><a href="#contato">Contato</a></li>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#sobre" data-section="sobre">Sobre</a></li>
+                    <li><a href="#tecnologias" data-section="tecnologias">Stack</a></li>
+                    <li><a href="#projetos" data-section="projetos">Projetos</a></li>
+                    <li><a href="#contato" data-section="contato">Contato</a></li>
                 </ul>
-                <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost" aria-label="GitHub">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
+                <div class="nav-actions">
+                    <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost nav-github" aria-label="GitHub">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
             </div>
         </div>
+        <div class="nav-progress" id="navProgress" aria-hidden="true"></div>
     </nav>
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
     <!-- ========== MAIN CONTENT ========== -->
     <main>
-        <!-- Hero Section -->
-        <div class="hero">
-            <div class="container">
-                <div class="hero-badge">Cientista da Computação — disponível para oportunidades</div>
-                <h1>Construindo produtos digitais com <span class="hero-highlight">Lógica da Programação</span></h1>
+        <!-- Hero Cinematic + Starfield -->
+        <div class="hero" id="hero">
+            <canvas id="starfield" aria-hidden="true"></canvas>
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="container hero-content">
+                <div class="hero-badge"><span class="hero-badge-dot"></span> Cientista da Computação — disponível para oportunidades</div>
+                <h1>Construindo produtos digitais com <span class="hero-highlight" id="heroTyping">Lógica da Programação</span></h1>
                 <p class="hero-sub">Automações, APIs de alta performance e bots que resolvem problemas reais. Código limpo, design cuidadoso, café infinito ☕ e muita Música 🎶.</p>
                 <div class="hero-actions">
-                    <a href="#projetos" class="btn-primary"><i class="fas fa-arrow-down"></i> Ver projetos</a>
+                    <a href="#projetos" class="btn-primary hero-cta"><i class="fas fa-rocket"></i> Explorar projetos</a>
                     <a href="#contato" class="btn-outline-light"><i class="fas fa-paper-plane"></i> Contatos</a>
                 </div>
+                <div class="hero-meta">
+                    <span><i class="fas fa-code"></i> TypeScript • Node.js • Python</span>
+                    <span><i class="fas fa-satellite-dish"></i> 166 contribuições • 4 repositórios</span>
+                </div>
             </div>
+            <a href="#sobre" class="hero-scroll" aria-label="Rolar para Sobre"><i class="fas fa-chevron-down"></i></a>
         </div>
 
         <div class="container">
@@ -134,30 +148,44 @@
                 </div>
             </section>
 
-            <!-- Projetos Section -->
+            <!-- Projetos Section — Fleet Cards -->
             <section id="projetos">
-                <h2 class="section-title">Projetos em destaque</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
+                <div class="section-header">
+                    <span class="section-kicker">0001 — FLEET</span>
+                    <h2 class="section-title">Projetos em destaque</h2>
+                    <p class="section-subtitle">Sua frota de produtos — cada card é uma nave com stack e missão próprias.</p>
+                </div>
+                <div class="project-filters" role="group" aria-label="Filtrar por tecnologia">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="typescript">TypeScript</button>
+                    <button class="filter-btn" data-filter="node">Node.js</button>
+                    <button class="filter-btn" data-filter="python">Python</button>
+                    <button class="filter-btn" data-filter="javascript">JavaScript</button>
+                </div>
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card" data-tech="typescript node telegram" tabindex="0" role="button" aria-label="Ver detalhes Deck-Finder-Bot" data-project="deck">
+                        <div class="project-card-glow" aria-hidden="true"></div>
                         <div class="project-icon"><i class="fab fa-telegram"></i></div>
                         <h3>Deck-Finder-Bot</h3>
                         <p class="project-desc">Bot inteligente para Telegram que auxilia jogadores a encontrar decks e estratégias.</p>
                         <div class="project-stack"><span>TypeScript</span><span>Node.js</span><span>Telegram API</span></div>
-                        <a href="https://github.com/danielambrosim/Deck-Finder-Bot" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
+                        <span class="card-link"><i class="fas fa-expand"></i> ver detalhes →</span>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-tech="javascript node express" tabindex="0" role="button" aria-label="Ver detalhes Crypto Wallet API" data-project="crypto">
+                        <div class="project-card-glow" aria-hidden="true"></div>
                         <div class="project-icon"><i class="fas fa-coins"></i></div>
                         <h3>Crypto Wallet API</h3>
                         <p class="project-desc">API REST para gerenciamento de carteiras de criptomoedas com autenticação JWT.</p>
                         <div class="project-stack"><span>JavaScript</span><span>Node.js</span><span>Express</span><span>JWT</span></div>
-                        <a href="https://github.com/danielambrosim/crypto-wallet-api" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
+                        <span class="card-link"><i class="fas fa-expand"></i> ver detalhes →</span>
                     </div>
-                    <div class="project-card">
+                    <div class="project-card" data-tech="javascript html css" tabindex="0" role="button" aria-label="Ver detalhes App_Cotacao" data-project="cotacao">
+                        <div class="project-card-glow" aria-hidden="true"></div>
                         <div class="project-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>App_Cotacao</h3>
                         <p class="project-desc">Aplicação web responsiva que consome APIs financeiras para exibir cotações.</p>
                         <div class="project-stack"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Fetch API</span></div>
-                        <a href="https://github.com/danielambrosim/App_Cotacao" target="_blank" class="card-link"><i class="fab fa-github"></i> repositório →</a>
+                        <span class="card-link"><i class="fas fa-expand"></i> ver detalhes →</span>
                     </div>
                 </div>
                 <div class="text-center">
@@ -318,6 +346,22 @@
             <p><a href="https://github.com/danielambrosim"><strong>GITHUB</strong></a></p>
         </div>
     </footer>
+
+    <!-- Modal Fleet Detail -->
+    <div class="project-modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="project-modal-backdrop" id="modalBackdrop"></div>
+        <div class="project-modal-card" role="document">
+            <button class="modal-close" id="modalClose" aria-label="Fechar"><i class="fas fa-times"></i></button>
+            <div class="modal-icon" id="modalIcon"></div>
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+            <div class="project-stack" id="modalStack"></div>
+            <div class="modal-actions">
+                <a href="#" target="_blank" class="btn-primary" id="modalLink"><i class="fab fa-github"></i> Ver repositório</a>
+                <button class="btn-ghost" id="modalCopy"><i class="fas fa-link"></i> Copiar link</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>
