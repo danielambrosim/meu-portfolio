@@ -16,12 +16,22 @@ if (window.emailjs && !EMAILJS_PUBLIC_KEY.startsWith('COLE_AQUI')) {
 
 // ========== SISTEMA DE TEMAS ==========
 
-// Definição dos temas (APENAS 4: Claro, Escuro, Roxo, Laranja)
+// Definição dos temas (APENAS 4: Claro=Terra, Escuro=Espaço, Roxo=Nebulosa, Laranja=Marte)
 const themes = {
     light: {
         name: 'Claro',
         icon: 'fa-sun',
         previewColor: '#0071e3',
+        env: {
+            label: 'TERRA · atmosfera azul',
+            starDensity: 0.25,
+            starColor: '#0071e3',
+            shootingStar: false,
+            hazeOpacity: 0.06,
+            heroBg: 'linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 45%, #ffffff 100%)',
+            heroGlow: 'radial-gradient(700px 400px at 18% 18%, rgba(0,113,227,0.10), transparent 70%), radial-gradient(600px 400px at 82% 82%, rgba(14,165,233,0.07), transparent 70%)',
+            cardGlow: 'linear-gradient(135deg, rgba(0,113,227,0.10), transparent 65%)'
+        },
         colors: {
             '--bg-primary': '#ffffff',
             '--bg-secondary': '#f5f5f7',
@@ -36,13 +46,25 @@ const themes = {
             '--navbar-bg': 'rgba(255, 255, 255, 0.92)',
             '--badge-bg': '#e8e8ed',
             '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.1)'
+            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.1)',
+            '--hero-bg': 'linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 45%, #ffffff 100%)',
+            '--hero-glow': 'radial-gradient(700px 400px at 18% 18%, rgba(0,113,227,0.10), transparent 70%), radial-gradient(600px 400px at 82% 82%, rgba(14,165,233,0.07), transparent 70%)'
         }
     },
     dark: {
         name: 'Escuro',
         icon: 'fa-moon',
         previewColor: '#0a84ff',
+        env: {
+            label: 'ESPAÇO · órbita noturna',
+            starDensity: 1.0,
+            starColor: '#0a84ff',
+            shootingStar: true,
+            hazeOpacity: 0.16,
+            heroBg: 'radial-gradient(900px 600px at 15% 15%, rgba(10,132,255,0.14), transparent 60%), radial-gradient(700px 500px at 85% 85%, rgba(56,189,248,0.10), transparent 60%), linear-gradient(180deg, #05070e 0%, #000000 100%)',
+            heroGlow: 'radial-gradient(800px 500px at 20% 20%, rgba(10,132,255,0.18), transparent 65%), radial-gradient(600px 400px at 80% 80%, rgba(14,165,233,0.12), transparent 70%)',
+            cardGlow: 'linear-gradient(135deg, rgba(10,132,255,0.16), transparent 65%)'
+        },
         colors: {
             '--bg-primary': '#000000',
             '--bg-secondary': '#1c1c1e',
@@ -57,13 +79,25 @@ const themes = {
             '--navbar-bg': 'rgba(0, 0, 0, 0.85)',
             '--badge-bg': '#2c2c2e',
             '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.5)'
+            '--card-shadow-hover': '0 20px 35px -12px rgba(0, 0, 0, 0.5)',
+            '--hero-bg': 'radial-gradient(900px 600px at 15% 15%, rgba(10,132,255,0.14), transparent 60%), radial-gradient(700px 500px at 85% 85%, rgba(56,189,248,0.10), transparent 60%), linear-gradient(180deg, #05070e 0%, #000000 100%)',
+            '--hero-glow': 'radial-gradient(800px 500px at 20% 20%, rgba(10,132,255,0.18), transparent 65%), radial-gradient(600px 400px at 80% 80%, rgba(14,165,233,0.12), transparent 70%)'
         }
     },
     purple: {
         name: 'Roxo',
         icon: 'fa-gem',
         previewColor: '#a855f7',
+        env: {
+            label: 'NEBULOSA · berço estelar',
+            starDensity: 1.15,
+            starColor: '#a855f7',
+            shootingStar: true,
+            hazeOpacity: 0.20,
+            heroBg: 'radial-gradient(800px 550px at 20% 20%, rgba(168,85,247,0.22), transparent 62%), radial-gradient(700px 500px at 80% 75%, rgba(236,72,153,0.16), transparent 62%), radial-gradient(600px 400px at 50% 0%, rgba(99,102,241,0.12), transparent 70%), linear-gradient(180deg, #0a0a14 0%, #12102a 100%)',
+            heroGlow: 'radial-gradient(750px 500px at 22% 22%, rgba(168,85,247,0.22), transparent 65%), radial-gradient(650px 450px at 78% 78%, rgba(236,72,153,0.14), transparent 70%)',
+            cardGlow: 'linear-gradient(135deg, rgba(168,85,247,0.18), rgba(236,72,153,0.08) 60%, transparent 75%)'
+        },
         colors: {
             '--bg-primary': '#0a0a14',
             '--bg-secondary': '#1a1a2e',
@@ -78,13 +112,25 @@ const themes = {
             '--navbar-bg': 'rgba(10, 10, 20, 0.85)',
             '--badge-bg': '#2a2a4a',
             '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(168, 85, 247, 0.15)'
+            '--card-shadow-hover': '0 20px 35px -12px rgba(168, 85, 247, 0.15)',
+            '--hero-bg': 'radial-gradient(800px 550px at 20% 20%, rgba(168,85,247,0.22), transparent 62%), radial-gradient(700px 500px at 80% 75%, rgba(236,72,153,0.16), transparent 62%), linear-gradient(180deg, #0a0a14 0%, #12102a 100%)',
+            '--hero-glow': 'radial-gradient(750px 500px at 22% 22%, rgba(168,85,247,0.22), transparent 65%), radial-gradient(650px 450px at 78% 78%, rgba(236,72,153,0.14), transparent 70%)'
         }
     },
     orange: {
         name: 'Laranja',
         icon: 'fa-fire',
         previewColor: '#f97316',
+        env: {
+            label: 'MARTE · tempestade de poeira',
+            starDensity: 0.55,
+            starColor: '#f97316',
+            shootingStar: false,
+            hazeOpacity: 0.14,
+            heroBg: 'radial-gradient(700px 500px at 18% 20%, rgba(249,115,22,0.18), transparent 62%), radial-gradient(600px 400px at 80% 80%, rgba(251,146,60,0.14), transparent 65%), radial-gradient(500px 350px at 50% 0%, rgba(234,88,12,0.10), transparent 70%), linear-gradient(180deg, #1a0e06 0%, #2e1c10 55%, #1a0e06 100%)',
+            heroGlow: 'radial-gradient(700px 450px at 20% 22%, rgba(249,115,22,0.20), transparent 65%), radial-gradient(600px 400px at 80% 78%, rgba(251,146,60,0.12), transparent 70%)',
+            cardGlow: 'linear-gradient(135deg, rgba(249,115,22,0.16), rgba(251,146,60,0.06) 60%, transparent 75%)'
+        },
         colors: {
             '--bg-primary': '#1a0e06',
             '--bg-secondary': '#2e1c10',
@@ -99,7 +145,9 @@ const themes = {
             '--navbar-bg': 'rgba(26, 14, 6, 0.85)',
             '--badge-bg': '#4a2e1a',
             '--card-shadow': '0 4px 12px rgba(0, 0, 0, 0.3)',
-            '--card-shadow-hover': '0 20px 35px -12px rgba(249, 115, 22, 0.15)'
+            '--card-shadow-hover': '0 20px 35px -12px rgba(249, 115, 22, 0.15)',
+            '--hero-bg': 'radial-gradient(700px 500px at 18% 20%, rgba(249,115,22,0.18), transparent 62%), radial-gradient(600px 400px at 80% 80%, rgba(251,146,60,0.14), transparent 65%), linear-gradient(180deg, #1a0e06 0%, #2e1c10 55%, #1a0e06 100%)',
+            '--hero-glow': 'radial-gradient(700px 450px at 20% 22%, rgba(249,115,22,0.20), transparent 65%), radial-gradient(600px 400px at 80% 78%, rgba(251,146,60,0.12), transparent 70%)'
         }
     }
 };
@@ -129,6 +177,12 @@ function applyTheme(themeName) {
     const mainToggleText = document.querySelector('#themeToggleMain span');
     if (mainToggleText) {
         mainToggleText.textContent = theme.name;
+    }
+
+    // Notifica ambiente visual (hero, starfield, cards)
+    document.dispatchEvent(new CustomEvent('theme:changed', { detail: { theme: themeName, env: theme.env } }));
+    if (typeof window.updateStarfieldEnv === 'function') {
+        window.updateStarfieldEnv(theme.env, themeName);
     }
 }
 
@@ -592,7 +646,7 @@ if (revealTargets.length) {
     }
 }
 
-// ========== HERO STARFIELD (canvas) ==========
+// ========== HERO STARFIELD (canvas) — reativo ao tema ==========
 (function initStarfield(){
     const canvas = document.getElementById('starfield');
     if(!canvas) return;
@@ -600,7 +654,22 @@ if (revealTargets.length) {
     const ctx = canvas.getContext('2d');
     let w, h, stars=[], rafId=null;
     let mouseX=0, mouseY=0;
-    const STAR_COUNT_DESKTOP=180, STAR_COUNT_MOBILE=80;
+    const BASE_DESKTOP=180, BASE_MOBILE=80;
+    // env atual (sobrescreve densidade/cor por tema)
+    let currentEnv = (themes[document.documentElement.getAttribute('data-theme')||'dark']||themes.dark).env;
+    function buildStars(){
+        const base = window.innerWidth < 768 ? BASE_MOBILE : BASE_DESKTOP;
+        const count = Math.round(base * (currentEnv?.starDensity ?? 1));
+        stars = Array.from({length: count}, () => ({
+            x: Math.random()*w,
+            y: Math.random()*h,
+            r: Math.random()*1.4+0.2 + (currentEnv?.starDensity>1 ? Math.random()*0.4 : 0),
+            o: Math.random()*0.6+0.2,
+            tw: Math.random()*0.03+0.005,
+            vx: (Math.random()-0.5)*(currentEnv?.starDensity>1 ? 0.28 : 0.2),
+            depth: Math.random()*0.8+0.2
+        }));
+    }
     function resize(){
         const rect = canvas.parentElement.getBoundingClientRect();
         const dpr = Math.min(window.devicePixelRatio||1, 2);
@@ -608,49 +677,66 @@ if (revealTargets.length) {
         canvas.width = w*dpr; canvas.height = h*dpr;
         canvas.style.width = w+'px'; canvas.style.height = h+'px';
         ctx.setTransform(dpr,0,0,dpr,0,0);
-        const count = window.innerWidth < 768 ? STAR_COUNT_MOBILE : STAR_COUNT_DESKTOP;
-        stars = Array.from({length: count}, () => ({
-            x: Math.random()*w,
-            y: Math.random()*h,
-            r: Math.random()*1.4+0.2,
-            o: Math.random()*0.6+0.2,
-            tw: Math.random()*0.03+0.005,
-            vx: (Math.random()-0.5)*0.2,
-            depth: Math.random()*0.8+0.2
-        }));
+        buildStars();
     }
+    // expõe atualização por tema
+    window.updateStarfieldEnv = function(env, themeName){
+        currentEnv = env;
+        // transição suave: rebuild com fade
+        canvas.style.transition = 'opacity 0.5s ease';
+        canvas.style.opacity = '0';
+        setTimeout(()=>{ buildStars(); canvas.style.opacity='1'; }, 260);
+    };
+    document.addEventListener('theme:changed', (e)=> {
+        if(e.detail?.env) window.updateStarfieldEnv(e.detail.env, e.detail.theme);
+    });
     function tick(){
         ctx.clearRect(0,0,w,h);
-        const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0071e3';
+        // Marte: fundo com leve névoa de poeira
+        if(currentEnv && document.documentElement.getAttribute('data-theme')==='orange'){
+            const g = ctx.createRadialGradient(w*0.5, h*0.85, 0, w*0.5, h*0.85, w*0.8);
+            g.addColorStop(0,'rgba(249,115,22,0.06)');
+            g.addColorStop(1,'transparent');
+            ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+        }
+        const accent = currentEnv?.starColor || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0071e3';
         stars.forEach(s=>{
             s.x += s.vx + mouseX*s.depth*0.02;
             s.o += s.tw * (Math.random()>0.5?1:-1);
             s.o = Math.max(0.15, Math.min(0.9, s.o));
             if(s.x < 0) s.x = w;
             if(s.x > w) s.x = 0;
-            // subtle color variation
             ctx.beginPath();
             ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-            ctx.fillStyle = s.r > 1 ? accent : `rgba(255,255,255,${s.o})`;
-            // for larger stars use accent with alpha
-            if(s.r > 1){
-                ctx.globalAlpha = s.o*0.9;
+            // Nebulosa: estrelas grandes com halo rosa, Terra: estrelas azuis suaves
+            if(s.r > 1.1){
+                ctx.fillStyle = accent;
+                ctx.globalAlpha = s.o*0.85;
+                ctx.shadowColor = accent;
+                ctx.shadowBlur = document.documentElement.getAttribute('data-theme')==='purple' ? 6 : 3;
             } else {
+                const isLight = document.documentElement.getAttribute('data-theme')==='light';
+                ctx.fillStyle = isLight ? `rgba(0,113,227,${s.o*0.55})` : `rgba(255,255,255,${s.o})`;
                 ctx.globalAlpha = s.o;
+                ctx.shadowBlur = 0;
             }
             ctx.fill();
+            ctx.shadowBlur=0;
         });
         ctx.globalAlpha = 1;
-        // shooting star occasionally
-        if(Math.random() < 0.008){
+        if(currentEnv?.shootingStar && Math.random() < 0.009){
             const sx = Math.random()*w*0.6;
             const sy = Math.random()*h*0.4;
             ctx.beginPath();
             ctx.moveTo(sx, sy);
-            ctx.lineTo(sx+60, sy+12);
-            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-            ctx.lineWidth = 1;
+            ctx.lineTo(sx+70, sy+14);
+            ctx.strokeStyle = document.documentElement.getAttribute('data-theme')==='purple' ? 'rgba(236,72,153,0.55)' : 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.2;
             ctx.stroke();
+        } else if(document.documentElement.getAttribute('data-theme')==='orange' && Math.random()<0.006){
+            // poeira marciana: partícula lenta
+            const x = Math.random()*w, y = h*0.6 + Math.random()*h*0.4;
+            ctx.beginPath(); ctx.arc(x,y,0.9,0,Math.PI*2); ctx.fillStyle='rgba(251,146,60,0.32)'; ctx.fill();
         }
         rafId = requestAnimationFrame(tick);
     }
