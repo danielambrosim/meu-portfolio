@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Daniel Ambrosim — Cientista da Computação especializado em JavaScript/TypeScript">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#ffffff" id="themeColorMeta">
     <title>Daniel Ambrosim Colodete — Portfólio de Ciência da Computação</title>
     
     <!-- Favicon -->
@@ -14,8 +14,10 @@
     <link rel="shortcut icon" href="favicon2.png">
 
     <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
@@ -34,11 +36,11 @@
                     <li><a href="#contato" data-section="contato">Contato</a></li>
                 </ul>
                 <div class="nav-actions">
-                    <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost nav-github" aria-label="GitHub">
+                    <a href="https://github.com/danielambrosim" target="_blank" rel="noopener noreferrer" class="btn-ghost nav-github" aria-label="GitHub">
                         <i class="fab fa-github"></i> GitHub
                     </a>
                     <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
-                        <span></span><span></span><span></span>
+                        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
                     </button>
                 </div>
             </div>
@@ -55,7 +57,7 @@
             <div class="hero-glow" aria-hidden="true"></div>
             <div class="container hero-content">
                 <div class="hero-badge"><span class="hero-badge-dot"></span> Cientista da Computação — disponível para oportunidades</div>
-                <h1>Construindo produtos digitais com <span class="hero-highlight" id="heroTyping">Lógica da Programação</span></h1>
+                <h1>Construindo produtos digitais com <span class="hero-highlight" id="heroTyping" aria-live="polite" aria-atomic="true">Lógica da Programação</span></h1>
                 <p class="hero-sub">Automações, APIs de alta performance e bots que resolvem problemas reais. Código limpo, design cuidadoso, café infinito ☕ e muita Música 🎶.</p>
                 <div class="hero-actions">
                     <a href="#projetos" class="btn-primary hero-cta"><i class="fas fa-rocket"></i> Explorar projetos</a>
@@ -109,9 +111,9 @@
                         </div>
                         
                         <div class="github-card">
-                            <img src="https://github.com/danielambrosim.png" alt="Foto de perfil GitHub">
+                            <img src="https://github.com/danielambrosim.png" alt="Foto de perfil GitHub" width="80" height="80" loading="lazy" decoding="async">
                             <p><strong>danielambrosim</strong><br><span>atividade consistente</span></p>
-                            <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost btn-small">
+                            <a href="https://github.com/danielambrosim" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-small">
                                 <i class="fab fa-github"></i> Ver perfil
                             </a>
                         </div>
@@ -134,13 +136,13 @@
             <section id="tecnologias">
                 <h2 class="section-title">Tech Stack</h2>
                 <div class="tech-grid">
-                    <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" target="_blank" class="tech-badge"><i class="fab fa-js"></i> JavaScript</a>
-                    <a href="https://www.typescriptlang.org/" target="_blank" class="tech-badge"><i class="fab fa-typescript"></i> TypeScript</a>
-                    <a href="https://nodejs.org/" target="_blank" class="tech-badge"><i class="fab fa-node-js"></i> Node.js</a>
-                    <a href="https://www.python.org/" target="_blank" class="tech-badge"><i class="fab fa-python"></i> Python</a>
-                    <a href="https://www.mongodb.com/" target="_blank" class="tech-badge"><i class="fas fa-database"></i> MongoDB</a>
-                    <a href="https://www.postgresql.org/" target="_blank" class="tech-badge"><i class="fas fa-database"></i> PostgreSQL</a>
-                    <a href="https://www.docker.com/" target="_blank" class="tech-badge"><i class="fab fa-docker"></i> Docker</a>
+                    <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fab fa-js"></i> JavaScript</a>
+                    <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fab fa-typescript"></i> TypeScript</a>
+                    <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fab fa-node-js"></i> Node.js</a>
+                    <a href="https://www.python.org/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fab fa-python"></i> Python</a>
+                    <a href="https://www.mongodb.com/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fas fa-database"></i> MongoDB</a>
+                    <a href="https://www.postgresql.org/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fas fa-database"></i> PostgreSQL</a>
+                    <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer" class="tech-badge"><i class="fab fa-docker"></i> Docker</a>
                 </div>
                 <div class="quote-block">
                     <i class="fas fa-quote-left"></i>
@@ -189,7 +191,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="https://github.com/danielambrosim?tab=repositories" target="_blank" class="btn-outline-light">
+                    <a href="https://github.com/danielambrosim?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-outline-light">
                         <i class="fab fa-github"></i> Explorar todos os projetos no GitHub
                     </a>
                 </div>
@@ -204,7 +206,7 @@
                     <div class="github-stats-card">
                         <div class="github-header">
                             <div class="github-profile">
-                                <img src="https://github.com/danielambrosim.png" alt="Avatar">
+                                <img src="https://github.com/danielambrosim.png" alt="Avatar" width="60" height="60" loading="lazy" decoding="async">
                                 <div>
                                     <div class="github-name">danielambrosim</div>
                                     <div class="github-handle">@danielambrosim · GitHub</div>
@@ -234,7 +236,7 @@
                         
                         <div class="availability-row">
                             <span class="hero-badge"><i class="fas fa-rocket"></i> 🚀 Aberto a colaborações e mentorias</span>
-                            <a href="https://github.com/danielambrosim?tab=overview&from=2025-01-01&to=2025-12-31" target="_blank" class="btn-ghost btn-small">
+                            <a href="https://github.com/danielambrosim?tab=overview&from=2025-01-01&to=2025-12-31" target="_blank" rel="noopener noreferrer" class="btn-ghost btn-small">
                                 <i class="fab fa-github"></i> Ver atividade completa
                             </a>
                         </div>
@@ -250,6 +252,7 @@
                             <div><div class="lang-label"><span>HTML/CSS</span><span>10%</span></div><div class="lang-bar"><div class="lang-fill" style="width: 10%; background: #e34c26;"></div></div></div>
                         </div>
                     </div>
+                </div>
                 </section>
             
                     <section id="videos">
@@ -262,9 +265,9 @@
                         </div>
                         
                         <div class="videos-grid">
-                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/_sq6Yh7EhYQ" frameborder="0" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-dragon"></i> Análise & Narrativa</span><h4>🎮 Expedition 33: O luto dos deuses</h4><p>Uma visão profunda sobre narrativa em games. Mostra como jogos podem abordar temas filosóficos complexos.</p></div></div>
-                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/TGO-CAImUeY" frameborder="0" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-headphones"></i> Música</span><h4>🎵 Jon Bellion</h4><p>Minha inspiração para continuar no mundo da música. Além de ser o tipo de música que ouço diariamente.</p></div></div>
-                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/W7_GO5ZOUAo" frameborder="0" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-code"></i> Dev</span><h4>💻 O Manual do Dev Backend</h4><p>Conteúdo que me ajuda a evoluir como desenvolvedor todos os dias.</p></div></div>
+                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/_sq6Yh7EhYQ" title="Expedition 33: O luto dos deuses" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-dragon"></i> Análise & Narrativa</span><h4>🎮 Expedition 33: O luto dos deuses</h4><p>Uma visão profunda sobre narrativa em games. Mostra como jogos podem abordar temas filosóficos complexos.</p></div></div>
+                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/TGO-CAImUeY" title="Jon Bellion - música" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-headphones"></i> Música</span><h4>🎵 Jon Bellion</h4><p>Minha inspiração para continuar no mundo da música. Além de ser o tipo de música que ouço diariamente.</p></div></div>
+                            <div class="video-card"><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/W7_GO5ZOUAo" title="O Manual do Dev Backend" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="video-info"><span class="video-tag"><i class="fas fa-code"></i> Dev</span><h4>💻 O Manual do Dev Backend</h4><p>Conteúdo que me ajuda a evoluir como desenvolvedor todos os dias.</p></div></div>
                         </div>
             <div class="videos-quote">
               <i class="fas fa-quote-left"></i> Equilíbrio entre código, música e diversão — é assim que mantenho a criatividade em alta. <i class="fas fa-quote-right"></i>
@@ -279,8 +282,8 @@
                     <i class="fas fa-envelope-open-text"></i>
                     <p>Se você busca um desenvolvedor com visão de produto, habilidades sólidas em back-end e front-end e foco em código limpo, vamos conversar.</p>
                     <div class="contact-buttons">
-                        <a href="https://github.com/danielambrosim" target="_blank" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://www.linkedin.com/in/daniel-ambrosim-colodete/" target="_blank" class="btn-ghost"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                        <a href="https://github.com/danielambrosim" target="_blank" rel="noopener noreferrer" class="btn-ghost"><i class="fab fa-github"></i> GitHub</a>
+                        <a href="https://www.linkedin.com/in/daniel-ambrosim-colodete/" target="_blank" rel="noopener noreferrer" class="btn-ghost"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
                         <a href="mailto:dambrosimcolodete@gmail.com" class="btn-primary"><i class="fas fa-paper-plane"></i> Email profissional</a>
                     </div>
                 </div>
@@ -308,7 +311,7 @@
 
                         <!-- Honeypot anti-spam: campo invisível para humanos, bots costumam preenchê-lo -->
                         <div class="form-group honeypot-field" aria-hidden="true">
-                            <label for="resumeWebsite">Não preencha este campo</label>
+                            <label for="resumeWebsite" class="sr-only">Não preencha este campo</label>
                             <input type="text" id="resumeWebsite" name="resumeWebsite" tabindex="-1" autocomplete="off">
                         </div>
 
@@ -343,7 +346,7 @@
         <div class="container">
             <p>© 2026 Daniel Ambrosim Colodete</p>
             <p><i class="fas fa-mobile-alt"></i> Design responsivo · modo temas disponível · música ambiente opcional</p>
-            <p><a href="https://github.com/danielambrosim"><strong>GITHUB</strong></a></p>
+            <p><a href="https://github.com/danielambrosim" target="_blank" rel="noopener noreferrer"><strong>GITHUB</strong></a></p>
         </div>
     </footer>
 
@@ -357,13 +360,13 @@
             <p id="modalDesc"></p>
             <div class="project-stack" id="modalStack"></div>
             <div class="modal-actions">
-                <a href="#" target="_blank" class="btn-primary" id="modalLink"><i class="fab fa-github"></i> Ver repositório</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" id="modalLink"><i class="fab fa-github"></i> Ver repositório</a>
                 <button class="btn-ghost" id="modalCopy"><i class="fas fa-link"></i> Copiar link</button>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

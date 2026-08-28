@@ -8,7 +8,7 @@
 const EMAILJS_PUBLIC_KEY = 'COLE_AQUI_SUA_PUBLIC_KEY';
 const EMAILJS_TEMPLATE_ID = 'COLE_AQUI_SEU_TEMPLATE_ID';
 const EMAILJS_SERVICE_ID = 'service_o3v8d0h';
-const RESUME_PDF_URL = 'https://danielambrosim.github.io/meu-portfolio/curriculo-daniel-ambrosim-colodete.pdf';
+const RESUME_PDF_URL = new URL('curriculo-daniel-ambrosim-colodete.pdf', window.location.href).href;
 
 if (window.emailjs && !EMAILJS_PUBLIC_KEY.startsWith('COLE_AQUI')) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -168,8 +168,8 @@ function applyTheme(themeName) {
     root.setAttribute('data-theme', themeName);
     localStorage.setItem('selectedTheme', themeName);
     
-    // Atualiza o ícone e texto do botão principal
-    const mainToggleIcon = document.querySelector('#themeToggleMain i');
+    // Atualiza o ícone e texto do botão principal (pega só o 1º ícone, não o chevron)
+    const mainToggleIcon = document.querySelector('#themeToggleMain i:first-of-type');
     if (mainToggleIcon) {
         mainToggleIcon.className = `fas ${theme.icon}`;
     }
@@ -178,6 +178,10 @@ function applyTheme(themeName) {
     if (mainToggleText) {
         mainToggleText.textContent = theme.name;
     }
+
+    // Atualiza meta theme-color para PWA / mobile bar
+    const themeMeta = document.getElementById('themeColorMeta');
+    if (themeMeta) themeMeta.setAttribute('content', theme.colors['--bg-primary'] || '#ffffff');
 
     // Notifica ambiente visual (hero, starfield, cards)
     document.dispatchEvent(new CustomEvent('theme:changed', { detail: { theme: themeName, env: theme.env } }));
@@ -282,8 +286,9 @@ createThemeSelector();
 // ========== O RESTO DO CÓDIGO PERMANECE IGUAL ==========
 // (contadores, gráfico e player de música - não mudam)
 
-// Contador animado
+// Contador animado (com guard para NaN)
 function animateNumber(element, final, duration = 1500) {
+    if (!element || !Number.isFinite(final)) { if(element) element.textContent = '0'; return; }
     let stepTime = 16;
     let steps = duration / stepTime;
     let increment = final / steps;
@@ -297,7 +302,7 @@ function animateNumber(element, final, duration = 1500) {
 
 // Dados GitHub — híbrido: tenta data/github.json (gerado pela Action), depois API ao vivo, com cache e fallback estático
 const GITHUB_USER = 'danielambrosim';
-const GITHUB_CACHE_KEY = 'gh_cache_v1';
+const GITHUB_CACHE_KEY = 'gh_cache_v2';
 const GITHUB_CACHE_TTL = 1000 * 60 * 60 * 6; // 6h
 const FALLBACK_DATA = { contribs: 166, repos: 4, stars: 3, projects: 3, languages: { TypeScript:45, JavaScript:30, Python:15, 'HTML/CSS':10 }, contribLevels: [1,2,3,4,2,1,3,4,2,1,3,4,2,3,1,4,2,3,4,1,2,3,4,2,1,3,2,4] };
 
@@ -372,7 +377,6 @@ async function fetchGitHubLive(){
             const cRes = await fetch(`https://github-contributions-api.deno.dev/${GITHUB_USER}.json`);
             if(cRes.ok){
                 const cj = await cRes.json();
-                const year = cj.contributions?.at(-1)?.contributions || cj.totalContributions;
                 if(typeof cj.totalContributions === 'number') contribs = cj.totalContributions;
                 else if(Array.isArray(cj.contributions)) contribs = cj.contributions.flat().reduce((a,w)=>a + (w.contributionCount||0),0);
                 // gera levels 0-4 a partir de contributionCount
@@ -435,16 +439,6 @@ function initAudio() {
     audioElement.src = playlist[currentTrackIndex].file;
     audioElement.load();
     document.getElementById('trackName').textContent = playlist[currentTrackIndex].name;
-}
-
-function startMusic() {
-    initAudio();
-    audioElement.play().then(() => {
-        isPlaying = true;
-        document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
-    }).catch(() => {
-        document.getElementById('trackName').textContent = '🔊 Clique para ativar';
-    });
 }
 
 function stopMusic() {
@@ -749,9 +743,14 @@ if (revealTargets.length) {
     resize();
     tick();
     document.addEventListener('visibilitychange', ()=>{
-        if(document.hidden) cancelAnimationFrame(rafId);
-        else tick();
+        if(document.hidden){ if(rafId) cancelAnimationFrame(rafId); rafId=null; }
+        else if(!rafId) tick();
     });
+    // respeita mudança de prefers-reduced-motion em runtime
+    try{
+        const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+        mql.addEventListener('change', e=>{ if(e.matches){ if(rafId) cancelAnimationFrame(rafId); rafId=null; canvas.style.display='none'; } else { canvas.style.display=''; if(!rafId) tick(); } });
+    }catch{}
 })();
 
 // ========== HERO TYPING (highlight) ==========
@@ -788,6 +787,11 @@ if (revealTargets.length) {
     setTimeout(tick, 3200);
 })();
 
+// ========== SCROLL LOCK (compartilhado modal + menu) ==========
+let _scrollLockCount = 0;
+function lockScroll(){ _scrollLockCount++; document.body.style.overflow='hidden'; }
+function unlockScroll(){ _scrollLockCount=Math.max(0,_scrollLockCount-1); if(_scrollLockCount===0) document.body.style.overflow=''; }
+
 // ========== FLEET FILTER + MODAL ==========
 (function fleet(){
     const grid = document.getElementById('projectsGrid');
@@ -808,17 +812,31 @@ if (revealTargets.length) {
         crypto: { title:'Crypto Wallet API', desc:'API REST resiliente para carteiras de criptomoedas com autenticação JWT, controle de saldo e histórico. Express + JWT + validação robusta.', icon:'<i class="fas fa-coins"></i>', stack:['JavaScript','Node.js','Express','JWT'], link:'https://github.com/danielambrosim/crypto-wallet-api' },
         cotacao: { title:'App_Cotacao', desc:'Aplicação web responsiva que consome APIs financeiras em tempo real, com cache e UI otimizada para mobile.', icon:'<i class="fas fa-chart-line"></i>', stack:['HTML5','CSS3','JavaScript','Fetch API'], link:'https://github.com/danielambrosim/App_Cotacao' }
     };
+    // mensagem quando filtro não encontra nada
+    let emptyMsg = document.getElementById('filterEmpty');
+    if(!emptyMsg){
+        emptyMsg = document.createElement('p');
+        emptyMsg.id='filterEmpty';
+        emptyMsg.textContent='Nenhum projeto com esse filtro. Tente "Todos".';
+        emptyMsg.style.display='none';
+        emptyMsg.style.textAlign='center';
+        emptyMsg.style.color='var(--text-secondary)';
+        emptyMsg.style.marginTop='1rem';
+        grid.after(emptyMsg);
+    }
     filterBtns.forEach(btn=>{
         btn.addEventListener('click', ()=>{
             filterBtns.forEach(b=>b.classList.remove('active'));
             btn.classList.add('active');
             const f = btn.dataset.filter;
+            let visible=0;
             cards.forEach(c=>{
                 const tech = (c.dataset.tech||'').toLowerCase();
                 const show = f==='all' || tech.includes(f);
                 c.classList.toggle('filtered-out', !show);
-                if(show){ c.classList.remove('reveal-visible'); void c.offsetWidth; c.classList.add('reveal-visible'); }
+                if(show){ visible++; c.classList.remove('reveal-visible'); void c.offsetWidth; c.classList.add('reveal-visible'); }
             });
+            emptyMsg.style.display = visible===0 ? 'block' : 'none';
         });
     });
     function open(key, cardEl){
@@ -831,20 +849,20 @@ if (revealTargets.length) {
         modalLink.href = d.link;
         modal.classList.add('open');
         modal.setAttribute('aria-hidden','false');
-        document.body.style.overflow='hidden';
+        lockScroll();
         modalClose.focus();
     }
     function close(){
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden','true');
-        document.body.style.overflow='';
+        unlockScroll();
     }
     cards.forEach(c=>{
         c.addEventListener('click', ()=> open(c.dataset.project, c));
         c.addEventListener('keydown', e=>{
             if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(c.dataset.project, c); }
         });
-        // tilt effect desktop
+        // tilt effect desktop (usa translateY do hover + rotate)
         if(window.innerWidth>768 && !_prefersReducedMotion){
             c.addEventListener('mousemove', e=>{
                 const r=c.getBoundingClientRect();
@@ -872,8 +890,8 @@ if (revealTargets.length) {
     const progress = document.getElementById('navProgress');
     const linkEls = document.querySelectorAll('.nav-links a[data-section]');
     if(!navbar || !navLinks || !toggle) return;
-    function openMenu(){ navLinks.classList.add('open'); toggle.classList.add('open'); toggle.setAttribute('aria-expanded','true'); overlay.classList.add('show'); document.body.style.overflow='hidden'; }
-    function closeMenu(){ navLinks.classList.remove('open'); toggle.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); overlay.classList.remove('show'); document.body.style.overflow=''; }
+    function openMenu(){ navLinks.classList.add('open'); toggle.classList.add('open'); toggle.setAttribute('aria-expanded','true'); overlay.classList.add('show'); lockScroll(); }
+    function closeMenu(){ if(!navLinks.classList.contains('open')) return; navLinks.classList.remove('open'); toggle.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); overlay.classList.remove('show'); unlockScroll(); }
     toggle.addEventListener('click', ()=> navLinks.classList.contains('open') ? closeMenu() : openMenu());
     if(overlay) overlay.addEventListener('click', closeMenu);
     linkEls.forEach(a=> a.addEventListener('click', closeMenu));

@@ -1,4 +1,4 @@
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -20,6 +20,8 @@
     --badge-bg: #e8e8ed;
     --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
     --card-shadow-hover: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    --hero-bg: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 45%, #ffffff 100%);
+    --hero-glow: radial-gradient(700px 400px at 18% 18%, rgba(0,113,227,0.10), transparent 70%), radial-gradient(600px 400px at 82% 82%, rgba(14,165,233,0.07), transparent 70%);
 }
 
 body {
@@ -216,6 +218,7 @@ body {
     display: flex;
     align-items: center;
     isolation: isolate;
+    background: var(--hero-bg, var(--bg-primary));
 }
 #starfield {
     position: absolute;
@@ -223,9 +226,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -2;
-}
-.hero {
-    background: var(--hero-bg, var(--bg-primary));
+    will-change: opacity;
 }
 .hero-glow {
     position: absolute;
@@ -1550,8 +1551,8 @@ footer a {
     }
 }
 
-/* ========== TRANSIÇÃO SUAVE PARA TODOS OS ELEMENTOS ========== */
-* {
+/* ========== TRANSIÇÃO SUAVE — apenas elementos temáticos ========== */
+:root, body, .navbar, .hero, .hero-glow, .card-current, .card-curiosity, .github-card, .github-stats-card, .languages-card, .videos-card, .project-card, .contact-card, .resume-card, .music-player, .theme-selector-wrapper, .btn-primary, .btn-ghost, .btn-outline-light, .tech-badge, .stat-card {
     transition-property: background-color, background, color, border-color, box-shadow, text-shadow;
     transition-duration: 0.3s;
     transition-timing-function: ease;
